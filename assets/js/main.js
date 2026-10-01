@@ -53,18 +53,15 @@ function shotMedia(shot, title, kind, lazy = true) {
 /* ---------- ドット絵のアイコン ---------- */
 const SVG = {
   folder: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M2 6h11l3 3h14v19H2z" fill="#d9a92e"/><path d="M2 11h28v17H2z" fill="#f4cf5f"/><path d="M2 6h11l3 3h14v19H2z" fill="none" stroke="#4a3700" stroke-width="1.4"/><path d="M3 12h26" stroke="#fff3c4" stroke-width="1.2"/></svg>',
-  works: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M5 3h11l3 3h11v15H5z" fill="#c9952a" stroke="#4a3700" stroke-width="1.2"/><path d="M2 8h11l3 3h14v18H2z" fill="#d9a92e"/><path d="M2 13h28v16H2z" fill="#f4cf5f"/><path d="M2 8h11l3 3h14v18H2z" fill="none" stroke="#4a3700" stroke-width="1.4"/><path d="M9 17h14v2H9zM9 21h10v2H9z" fill="#4b3263"/></svg>',
   web: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M2 6h11l3 3h14v19H2z" fill="#d9a92e"/><path d="M2 11h28v17H2z" fill="#f4cf5f"/><path d="M2 6h11l3 3h14v19H2z" fill="none" stroke="#4a3700" stroke-width="1.4"/><circle cx="21" cy="20" r="7" fill="#7cc4e8" stroke="#1d4a66" stroke-width="1.3"/><path d="M14 20h14M21 13v14M16 16h10M16 24h10" stroke="#1d4a66" stroke-width="1"/><ellipse cx="21" cy="20" rx="3" ry="7" fill="none" stroke="#1d4a66" stroke-width="1"/></svg>',
-  game: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M5 11h22l3 3v9l-3 3h-5l-3-3h-6l-3 3H5l-3-3v-9z" fill="#b8b2a6" stroke="#333" stroke-width="1.4"/><path d="M8 15h2v2h2v2h-2v2H8v-2H6v-2h2z" fill="#333"/><rect x="21" y="15" width="3" height="3" fill="#c2413b"/><rect x="24" y="18" width="3" height="3" fill="#4b3263"/><path d="M13 6h6v5h-6z" fill="#d8d4cb" stroke="#333"/></svg>',
+  game: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="3" y="5" width="26" height="22" fill="#d8d4cb" stroke="#333" stroke-width="1.4"/><rect x="4" y="6" width="24" height="4" fill="#4b3263"/><rect x="6" y="12" width="20" height="13" fill="#fff" stroke="#8a867e"/><path d="M13 15l7 3.5-7 3.5z" fill="#b27aa6" stroke="#4b3263"/></svg>',
   txt: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M6 2h14l6 6v22H6z" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M20 2v6h6" fill="#ddd" stroke="#333" stroke-width="1.4"/><path d="M10 13h12M10 17h12M10 21h12M10 25h8" stroke="#4b3263" stroke-width="1.6"/></svg>',
   pdf: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M6 2h14l6 6v22H6z" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M20 2v6h6" fill="#ddd" stroke="#333" stroke-width="1.4"/><rect x="4" y="17" width="20" height="9" fill="#c2413b"/><path d="M7 19h3v2H8v3H7zM8 19h2v2H8zM11 19h3v5h-3zM12 20h1v3h-1zM15 19h3v1h-2v1h2v1h-2v2h-1z" fill="#fff"/><path d="M12 20h1v3h-1z" fill="#c2413b"/></svg>',
   mail: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="3" y="8" width="26" height="17" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M3 8l13 10 13-10" fill="none" stroke="#333" stroke-width="1.4"/><circle cx="25" cy="9" r="4" fill="#b27aa6" stroke="#4b3263"/></svg>',
   img: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="3" y="5" width="26" height="22" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M5 25l8-9 6 6 4-4 4 7z" fill="#6f9c96"/><circle cx="22" cy="11" r="3" fill="#f4cf5f"/></svg>',
-  paint: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M16 3C8 3 3 9 3 16c0 6 4 10 9 10 3 0 3-3 5-3h3c5 0 9-3 9-8 0-7-6-12-13-12z" fill="#f2e6c9" stroke="#333" stroke-width="1.4"/><circle cx="10" cy="12" r="2.4" fill="#c2413b"/><circle cx="16" cy="9" r="2.4" fill="#f4cf5f"/><circle cx="22" cy="12" r="2.4" fill="#4b8fc4"/><circle cx="9" cy="19" r="2.4" fill="#6f9c96"/><rect x="18" y="16" width="5" height="4" fill="#b27aa6"/></svg>',
-  uiux: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="3" y="4" width="21" height="16" fill="#fff" stroke="#333" stroke-width="1.4"/><rect x="5" y="6" width="17" height="3" fill="#4b3263"/><rect x="5" y="11" width="7" height="7" fill="#b27aa6"/><path d="M14 12h7M14 15h7M14 18h5" stroke="#999" stroke-width="1.2"/><rect x="19" y="13" width="10" height="17" rx="1" fill="#3a3833" stroke="#333"/><rect x="21" y="15" width="6" height="11" fill="#7cc4e8"/></svg>',
-  pc: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="4" y="4" width="24" height="17" fill="#d8d4cb" stroke="#333" stroke-width="1.4"/><rect x="7" y="7" width="18" height="11" fill="#4a7a74"/><rect x="10" y="23" width="12" height="3" fill="#d8d4cb" stroke="#333"/><rect x="6" y="26" width="20" height="3" fill="#d8d4cb" stroke="#333"/></svg>',
+  pc: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="4" y="4" width="24" height="17" fill="#d8d4cb" stroke="#333" stroke-width="1.4"/><rect x="7" y="7" width="18" height="11" fill="#6f9c96"/><rect x="10" y="23" width="12" height="3" fill="#d8d4cb" stroke="#333"/><rect x="6" y="26" width="20" height="3" fill="#d8d4cb" stroke="#333"/></svg>',
 };
-const ICON_OF = { web: 'web', uiux: 'uiux', illust: 'paint', univ: 'folder', works: 'works', about: 'txt', contact: 'mail', resume: 'pdf' };
+const ICON_OF = { web: 'web', uiux: 'folder', illust: 'folder', univ: 'folder', works: 'pc', about: 'txt', contact: 'mail', resume: 'pdf' };
 const iconFor = id => SVG[id.indexOf('game:') === 0 ? 'game' : ICON_OF[id] || 'folder'];
 const KIND_ICON = { FOLDER: 'folder', BROWSER: 'web', GAME: 'game', VIEWER: 'img', TEXT: 'txt', MAIL: 'mail', WELCOME: 'pc' };
 
@@ -138,9 +135,9 @@ const entries = DESK.map((d, i) => {
     el.dataset.open = d.id;
   }
   const g = d.id.indexOf('game:') === 0 && GAMES.find(x => 'game:' + x.id === d.id);
-  const preview = g ? '<span class="preview out" aria-hidden="true">' + (g.shot ? '<img src="' + esc(asset(g.shot)) + '" alt="" loading="lazy">' : '') +
+  const preview = g ? '<span class="preview" aria-hidden="true">' + (g.shot ? '<img src="' + esc(asset(g.shot)) + '" alt="" loading="lazy">' : '') +
     '<span>▶ ' + esc(g.desc) + '</span></span>' : '';
-  el.innerHTML = '<span class="ico" aria-hidden="true">' + iconFor(d.id) + (g ? '<i class="ico-badge">▶</i>' : '') + '</span>' + preview +
+  el.innerHTML = '<span class="ico" aria-hidden="true">' + iconFor(d.id) + '</span>' + preview +
     '<span class="lbl">' + esc(d.label) + extra + '</span>';
   if (g) el.setAttribute('aria-label', d.label + '（Web ゲーム）');
   // 決めた位置 ＋ ほんの少しだけずらす（設計されたランダム）
@@ -264,6 +261,7 @@ function openSheet(id, o) {
     '<h2 class="sheet-title" id="' + tid + '" tabindex="-1">' + esc(o.title) + '</h2>' +
     '<button class="btn sbtn" data-act="min" aria-label="最小化"><span aria-hidden="true">_</span></button>' +
     '<button class="btn sbtn" data-act="close" aria-label="閉じる"><span aria-hidden="true">×</span></button></header>' +
+    (o.menu ? '<div class="menubar" aria-hidden="true"><span>ファイル</span><span>編集</span><span>表示</span><span>ヘルプ</span></div>' : '') +
     '<div class="sheet-body' + (o.inset === false ? '' : ' in') + '">' + o.body + '</div>' +
     (o.status !== undefined ? '<div class="sheet-foot statusbar">' + esc(o.status) + '</div>' : '');
   if (o.node) $('.sheet-body', el).appendChild(o.node);
@@ -427,9 +425,9 @@ function card(attrs, media, title, sub, badge, badgeCls) {
     '<b>' + esc(title) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : '') + '</button>';
 }
 function catCards(id) {
-  if (id === 'web') return WEB.map((w, i) => card('data-open="web" data-index="' + i + '"', shotMedia(w.shot, w.title, 'web'), w.title, w.desc, 'WEB'));
-  if (id === 'game') return GAMES.map(g => card('data-open="game:' + esc(g.id) + '"', shotMedia(g.shot, g.title, 'game'), g.title, g.desc, 'PLAY ▶', 'play'));
-  if (id === 'uiux') return UIUX.map(p => card('data-view="' + p.id + '" data-i="0"', imgTag(p.items[0].src, 'sm', p.title), p.title, p.sub, p.items.length + ' 枚'));
+  if (id === 'web') return WEB.map((w, i) => card('data-open="web" data-index="' + i + '"', shotMedia(w.shot, w.title, 'web'), w.title, w.desc));
+  if (id === 'game') return GAMES.map(g => card('data-open="game:' + esc(g.id) + '"', shotMedia(g.shot, g.title, 'game'), g.title, g.desc));
+  if (id === 'uiux') return UIUX.map(p => card('data-view="' + p.id + '" data-i="0"', imgTag(p.items[0].src, 'sm', p.title), p.title, p.sub));
   const set = id === 'univ' ? UNIV : ILLUST;
   return set.map((it, i) => card('data-view="' + id + '" data-i="' + i + '"', imgTag(it.src, 'sm', it.cap), it.cap));
 }
@@ -440,7 +438,7 @@ function openWorks(cat) {
   const chips = [{ id: 'all', label: 'すべて' }].concat(CATEGORIES).map(c =>
     '<button class="chip" data-cat="' + c.id + '" aria-pressed="false">' + esc(c.label) + '</button>').join('');
   const el = openSheet('works', {
-    title: 'すべての作品', kind: 'FOLDER', w: 860, status: countWorks() + ' 件の作品',
+    title: 'すべての作品', kind: 'FOLDER', w: 860, menu: true, status: countWorks() + ' 件の作品',
     body: '<div class="filters" role="group" aria-label="作品の分類">' + chips + '</div>' + CATEGORIES.map(c => catSection(c.id)).join(''),
     init: sheet => {
       sheet._filter = c => {
@@ -459,7 +457,7 @@ function openFolder(id) {
   const n = catCards(id).length;
   const lead = id === 'uiux' ? '<p class="lead">2つのプロジェクトを、画面の流れに沿ってご紹介します。</p>' : '';
   openSheet(id, {
-    title: catLabel(id), kind: 'FOLDER', w: 680,
+    title: catLabel(id), kind: 'FOLDER', w: 640, menu: true,
     status: n + ' 件' + (id === 'uiux' ? '　選ぶと、画面を順番に見られます' : '　選ぶと、大きく見られます'),
     body: lead + '<div class="cards">' + catCards(id).join('') + '</div>',
   });
@@ -473,8 +471,8 @@ function slideHTML(s, i, n) {
   const label = (i + 1) + ' / ' + n + '：' + s.title;
   if (s.type === 'game') {
     return '<div class="slide" role="group" aria-roledescription="スライド" aria-label="' + esc(label) + '">' +
-      '<button class="shot" data-open="game:' + esc(s.id) + '">' + shotMedia(s.shot, s.title, 'game') + '<span class="shot-play" aria-hidden="true">▶ PLAY</span></button>' +
-      '<div class="slide-info"><p class="slide-kind game">Web ゲーム</p><h3>' + esc(s.title) + '</h3><p>' + esc(s.desc) + '</p>' +
+      '<button class="shot" data-open="game:' + esc(s.id) + '">' + shotMedia(s.shot, s.title, 'game') + '</button>' +
+      '<div class="slide-info"><p class="slide-kind">Web ゲーム</p><h3>' + esc(s.title) + '</h3><p>' + esc(s.desc) + '</p>' +
       '<p class="role">' + (s.control === 'keyboard' ? 'キーボードで遊ぶゲーム' : 'タッチ・マウスで遊ぶゲーム') + '</p>' +
       '<div class="slide-actions"><button class="btn btn-main" data-open="game:' + esc(s.id) + '">▶ ウィンドウで遊ぶ</button>' +
       '<a class="btn" href="' + esc(s.url) + '" target="_blank" rel="noopener">新しいタブで開く ↗</a></div></div></div>';
@@ -504,7 +502,7 @@ function openWeb(start) {
       '<div class="car-nav"><button class="btn car-arrow prev" aria-label="前の作品">‹</button>' +
       '<button class="btn car-arrow next" aria-label="次の作品">›</button></div>' +
       '<div class="dots">' + SLIDES.map((s, i) =>
-        '<button class="dot' + (s.type === 'game' ? ' game' : '') + '" aria-label="' + (i + 1) + '番目：' + esc(s.title) + '"></button>').join('') + '</div></div>',
+        '<button class="dot" aria-label="' + (i + 1) + '番目：' + esc(s.title) + '"></button>').join('') + '</div></div>',
     init: el => initCarousel(el, start || 0),
   });
 }
@@ -579,10 +577,10 @@ function gameTitle(el, g) {
     '<div class="g-title"><' + (pcOnly ? 'div' : 'button tabindex="-1"') + ' class="g-shot in">' +
     (g.shot ? '<img src="' + esc(asset(g.shot)) + '" alt="' + esc(g.title) + 'のタイトル画面">' : shotMedia('', g.title, 'game')) +
     '</' + (pcOnly ? 'div' : 'button') + '>' +
-    '<div class="g-meta"><p class="g-ctrl">' + (g.control === 'keyboard' ? '⌨ キーボードで遊ぶ' : '☝ タッチ・マウスで遊ぶ') + '</p>' +
+    '<div class="g-meta"><p class="g-ctrl">' + (g.control === 'keyboard' ? 'キーボードで遊ぶゲーム' : 'タッチ・マウスで遊ぶゲーム') + '</p>' +
     '<h3>' + esc(g.title) + '</h3><p>' + esc(g.desc) + '</p>' +
     (pcOnly ? '<p class="g-pc">このゲームはPCで遊べます</p>' : '') +
-    '<div class="row">' + (pcOnly ? '' : '<button class="btn btn-main g-start">▶ プレイする</button>') +
+    '<div class="row">' + (pcOnly ? '' : '<button class="btn btn-main g-start">プレイする</button>') +
     '<a class="btn" href="' + esc(g.url) + '" target="_blank" rel="noopener">新しいタブで開く ↗</a></div></div></div>';
   const startBtn = $('.g-start', body);
   if (startBtn) {
@@ -713,7 +711,7 @@ function openAbout() {
     title: '私について.txt - メモ帳', kind: 'TEXT', w: 660,
     body:
       '<div class="about"><figure class="about-photo">' + imgTag(PROFILE.avatar, 'sm', 'ルオ ジアウェンの写真', false) + '</figure><div>' +
-      '<p class="kicker">PROFILE</p><h3 class="about-name">' + esc(PROFILE.name) + '</h3>' +
+      '<h3 class="about-name">' + esc(PROFILE.name) + '</h3>' +
       PROFILE.bio.map(p => '<p>' + esc(p) + '</p>').join('') +
       '<div class="row"><a class="btn btn-main" href="' + esc(asset(PROFILE.resume)) + '" target="_blank" rel="noopener">履歴書をダウンロード</a>' +
       '<a class="btn" href="' + esc(PROFILE.aboutMe) + '" target="_blank" rel="noopener">詳しく ↗</a></div></div></div>' +

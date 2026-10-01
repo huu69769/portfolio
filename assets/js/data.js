@@ -138,21 +138,23 @@ const CATEGORIES = [
    デスクトップのアイコンの並べ方
    id    : 何を置くか（'web' 'uiux' 'univ' 'illust' 'works' 'about' 'contact' 'resume'、
            ゲームは 'game:ゲームのid'）
-   label : アイコンの下に出る名前
+   label : アイコンの下に出る名前（\n で改行）
    x, y  : 置く位置（0 = 左/上の端、1 = 右/下の端）
    並び順は、スマホでの並び順にもなります（上にあるほど先に表示）
    -------------------------------------------------------------------------- */
 const DESK = [
-  { id: 'web',        label: 'Web制作',           x: 0.02, y: 0.03 },
-  { id: 'game:snake', label: 'スネーク.exe',       x: 0.10, y: 0.21 },
-  { id: 'game:tap',   label: 'タップ・ドット.exe', x: 0.02, y: 0.40 },
-  { id: 'uiux',       label: 'UI/UX システム',     x: 0.10, y: 0.59 },
-  { id: 'works',      label: 'すべての作品',       x: 0.02, y: 0.80 },
-  { id: 'about',      label: '私について.txt',     x: 0.98, y: 0.03 },
-  { id: 'resume',     label: '履歴書.pdf',         x: 0.90, y: 0.21 },
-  { id: 'contact',    label: 'お問い合わせ',       x: 0.98, y: 0.40 },
-  { id: 'illust',     label: 'イラスト',           x: 0.90, y: 0.59 },
-  { id: 'univ',       label: '大学時代のデザイン', x: 0.98, y: 0.80 },
+  // ── 左側：作品（上ほど見てほしいもの） ──
+  { id: 'web',        label: 'Web制作',            x: 0.02, y: 0.02 },
+  { id: 'game:snake', label: 'ゲーム\nスネーク',     x: 0.10, y: 0.17 },
+  { id: 'game:tap',   label: 'ゲーム\nタップ・ドット', x: 0.02, y: 0.32 },
+  { id: 'uiux',       label: 'UI/UX システム',      x: 0.10, y: 0.47 },
+  { id: 'illust',     label: 'イラスト',            x: 0.02, y: 0.62 },
+  { id: 'univ',       label: '大学時代のデザイン',  x: 0.10, y: 0.78 },
+  { id: 'works',      label: 'すべての作品',        x: 0.02, y: 0.96 },
+  // ── 右側：わたしのこと ──
+  { id: 'about',      label: '私について.txt',      x: 0.98, y: 0.02 },
+  { id: 'resume',     label: '履歴書.pdf',          x: 0.90, y: 0.19 },
+  { id: 'contact',    label: 'お問い合わせ',        x: 0.98, y: 0.36 },
 ];
 
 /* --------------------------------------------------------------------------

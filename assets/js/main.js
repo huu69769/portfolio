@@ -113,7 +113,7 @@ else {
    ========================================================================== */
 const desk = $('#desk');
 const entriesBox = $('#entries');
-const POS_KEY = 'luo-desk-pos-v2';
+const POS_KEY = 'luo-desk-pos-v3';
 const savedPos = store.get(POS_KEY) || {};
 const rand = (a, b) => a + Math.random() * (b - a);
 const clamp01 = v => Math.min(1, Math.max(0, v));
@@ -139,7 +139,7 @@ const entries = DESK.map((d, i) => {
     '<span>▶ ' + esc(g.desc) + '</span></span>' : '';
   el.innerHTML = '<span class="ico" aria-hidden="true">' + iconFor(d.id) + '</span>' + preview +
     '<span class="lbl">' + esc(d.label) + extra + '</span>';
-  if (g) el.setAttribute('aria-label', d.label + '（Web ゲーム）');
+  if (g) el.setAttribute('aria-label', 'Web ゲーム：' + g.title);
   // 決めた位置 ＋ ほんの少しだけずらす（設計されたランダム）
   el._home = { x: clamp01(d.x + rand(-0.015, 0.015)), y: clamp01(d.y + rand(-0.015, 0.015)) };
   el._pos = savedPos[d.id] || el._home;

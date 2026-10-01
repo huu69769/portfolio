@@ -128,7 +128,7 @@ body.ready .entry { animation: icon-in .25s steps(3) backwards; animation-delay:
 .ico svg { width: 48px; height: 48px; image-rendering: pixelated; }
 .lbl {
   padding: 1px 4px;
-  text-align: center; line-height: 1.35;
+  text-align: center; line-height: 1.35; white-space: pre-line;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, .55);
 }
 .entry.selected .lbl { background: var(--select); text-shadow: none; outline: 1px dotted #fff; }
@@ -203,17 +203,8 @@ body.ready .entry { animation: icon-in .25s steps(3) backwards; animation-delay:
 .cursor { display: inline-block; width: .5em; height: .9em; margin-left: .08em; background: var(--title-a); vertical-align: -.08em; animation: blink 1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 .hello > p:not([class]) { margin: 0 0 12px; line-height: 1.8; }
-.fields { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0; padding: 0; }
-.field {
-  min-height: 32px; display: inline-flex; align-items: baseline; gap: 6px;
-  padding: 2px; border: none; background: none; text-align: left; cursor: pointer;
-}
-.field b { font-family: var(--pixel); font-weight: 400; font-size: 14px; padding: 0 2px; }
-.field span { font-size: 12px; color: var(--muted); }
-.field b::before { content: "▸ "; color: var(--select); }
-.field:hover b { background: var(--select); color: #fff; }
-.field:hover b::before { color: #fff; }
-.hint { margin: 14px 0 0; font-size: 13px; color: var(--muted); }
+.fields { list-style: none; display: flex; flex-wrap: wrap; gap: 2px 20px; margin: 0; padding: 8px 0 0; border-top: 1px solid var(--shade); box-shadow: 0 -1px 0 var(--light) inset; font-size: 12.5px; color: var(--muted); }
+.fields b { font-family: var(--pixel); font-weight: 400; font-size: 14px; color: var(--ink); margin-right: 4px; }
 
 /* ---------- フォルダの中身（作品カード） ---------- */
 .filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 18px; }
@@ -417,10 +408,8 @@ button.g-shot { cursor: pointer; }
   .hello-big { font-size: 34px; margin-bottom: 12px; }
   .hello-small { display: none; }
   .hello > p:not([class]) { font-size: 13.5px; line-height: 1.7; }
-  .fields { gap: 0 14px; }
-  .field { min-height: 44px; align-items: center; }
+  .fields { gap: 2px 14px; }
   .is-welcome .row .btn { flex: 1; min-height: 44px; }
-  .hint { display: none; }
 
   /* アイコンはホーム画面のアプリ一覧に */
   .icons { position: static; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 14px 8px 24px; pointer-events: auto; }

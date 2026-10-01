@@ -24,7 +24,7 @@
 | カルーセルの切り替え間隔 | `CAROUSEL_INTERVAL` |
 | 画像の置き場所 | `BASE`（`'assets/'` ⇔ 旧サイトのURL を1行で切り替え） |
 
-※ ゲームを新しく足したら、`DESK` にも `{ id: 'game:ゲームのid', label: '…', x: …, y: … }` を1行足すとデスクトップに置かれます。
+※ Web ゲームはいまは空です（空のあいだは分類も隠れます）。ゲームを足したら、`DESK` にも `{ id: 'game:ゲームのid', label: '…', x: …, y: … }` を1行足すとデスクトップに置かれます。
 
 ## 画像について
 
@@ -49,8 +49,6 @@ assets/js/main.js     # 動き
 assets/css/style.css  # 見た目（色は先頭の :root で変えられます）
 assets/shots/         # Web制作・ゲームのスクリーンショット
 assets/og.png         # SNS でシェアされたときの画像
-games/snake/          # サンプルゲーム（キーボード）
-games/tap/            # サンプルゲーム（タッチ）
 ```
 
 ローカルで確認するとき：`python3 -m http.server 8000` → http://localhost:8000

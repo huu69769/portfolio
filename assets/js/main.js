@@ -71,6 +71,8 @@ UIUX.forEach(p => { SETS[p.id] = { title: p.title, sub: p.sub, items: p.items };
 SETS.univ = { title: '大学時代のデザイン', items: UNIV };
 SETS.illust = { title: 'イラスト', items: ILLUST };
 const catLabel = id => (CATEGORIES.find(c => c.id === id) || {}).label || id;
+// 中身がまだ無い分類（ゲームなど）は出さない
+const CATS = CATEGORIES.filter(c => c.id !== 'game' || GAMES.length);
 
 // カルーセルに並べるもの：Web制作 ＋ ゲーム（ゲームも見逃さないように）
 const SLIDES = WEB.map(w => Object.assign({ type: 'web' }, w))
@@ -81,7 +83,7 @@ const SLIDES = WEB.map(w => Object.assign({ type: 'web' }, w))
    ========================================================================== */
 const boot = $('#boot');
 const BOOT_LINES = ['LUO JIAWEN portfolio OS  ver.2026', '', 'UI/UX を読み込み中 ........ OK',
-  'イラスト を読み込み中 ...... OK', 'Web制作 を読み込み中 ....... OK', 'Web ゲーム を読み込み中 .... OK', '', 'ようこそ。'];
+  'イラスト を読み込み中 ...... OK', 'Web制作 を読み込み中 ....... OK'].concat(GAMES.length ? ['Web ゲーム を読み込み中 .... OK'] : [], ['', 'ようこそ。']);
 let bootTimer = null, booted = false;
 function endBoot() {
   if (booted) return;
@@ -435,11 +437,11 @@ const catSection = id => '<section class="cat" data-cat="' + id + '"><h3 class="
   ' <small>' + catCards(id).length + ' WORKS</small></h3><div class="cards">' + catCards(id).join('') + '</div></section>';
 
 function openWorks(cat) {
-  const chips = [{ id: 'all', label: 'すべて' }].concat(CATEGORIES).map(c =>
+  const chips = [{ id: 'all', label: 'すべて' }].concat(CATS).map(c =>
     '<button class="chip" data-cat="' + c.id + '" aria-pressed="false">' + esc(c.label) + '</button>').join('');
   const el = openSheet('works', {
     title: 'すべての作品', kind: 'FOLDER', w: 860, menu: true, status: countWorks() + ' 件の作品',
-    body: '<div class="filters" role="group" aria-label="作品の分類">' + chips + '</div>' + CATEGORIES.map(c => catSection(c.id)).join(''),
+    body: '<div class="filters" role="group" aria-label="作品の分類">' + chips + '</div>' + CATS.map(c => catSection(c.id)).join(''),
     init: sheet => {
       sheet._filter = c => {
         $$('.chip', sheet).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cat === c)));
@@ -497,7 +499,7 @@ function openWeb(start) {
       '<div class="addr"><span aria-hidden="true">アドレス</span>' +
       '<span class="addr-field in" aria-label="表示中のサイトのアドレス"></span>' +
       '<a class="btn addr-go" target="_blank" rel="noopener">開く ↗</a></div>' +
-      '<div class="car" role="region" aria-roledescription="カルーセル" aria-label="Web制作とWeb ゲーム">' +
+      '<div class="car" role="region" aria-roledescription="カルーセル" aria-label="' + (GAMES.length ? 'Web制作とWeb ゲーム' : 'Web制作') + '">' +
       '<div class="car-view in"><div class="car-track">' + SLIDES.map((s, i) => slideHTML(s, i, n)).join('') + '</div></div>' +
       '<div class="car-nav"><button class="btn car-arrow prev" aria-label="前の作品">‹</button>' +
       '<button class="btn car-arrow next" aria-label="次の作品">›</button></div>' +

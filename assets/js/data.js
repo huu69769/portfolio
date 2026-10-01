@@ -83,21 +83,16 @@ const WEB = [
    desc    : 一言で遊び方
    control : 'keyboard'（キーボードで遊ぶ）か 'touch'（タッチ・マウスで遊ぶ）
              keyboard のゲームは、スマホでは「PCで遊べます」の案内になります
-   ※ いまの2つは動作確認用のサンプルです。自分のゲームに差し替えてください。
+   ※ いまは空っぽです。空のあいだは「Web ゲーム」の分類も自動で隠れます。
+   ゲームができたら、下のお手本の // を消して書き換え、DESK にも1行足してください。
    -------------------------------------------------------------------------- */
 const GAMES = [
-  { id: 'snake',
-    title: 'スネーク（サンプル）',
-    url: 'games/snake/',
-    shot: 'shots/game-snake.webp',
-    desc: '矢印キーでヘビを動かして、ドットを食べよう。',
-    control: 'keyboard' },
-  { id: 'tap',
-    title: 'タップ・ドット（サンプル）',
-    url: 'games/tap/',
-    shot: 'shots/game-tap.webp',
-    desc: '消える前に、色の丸をタップしよう。',
-    control: 'touch' },
+  // { id: 'mygame',
+  //   title: 'ゲームの名前',
+  //   url: 'games/mygame/',
+  //   shot: 'shots/game-mygame.webp',
+  //   desc: '一言で遊び方',
+  //   control: 'keyboard' },
 ];
 
 /* --------------------------------------------------------------------------
@@ -144,13 +139,12 @@ const CATEGORIES = [
    -------------------------------------------------------------------------- */
 const DESK = [
   // ── 左側：作品（上ほど見てほしいもの） ──
-  { id: 'web',        label: 'Web制作',            x: 0.02, y: 0.02 },
-  { id: 'game:snake', label: 'ゲーム\nスネーク',     x: 0.10, y: 0.17 },
-  { id: 'game:tap',   label: 'ゲーム\nタップ・ドット', x: 0.02, y: 0.32 },
-  { id: 'uiux',       label: 'UI/UX システム',      x: 0.10, y: 0.47 },
-  { id: 'illust',     label: 'イラスト',            x: 0.02, y: 0.62 },
-  { id: 'univ',       label: '大学時代のデザイン',  x: 0.10, y: 0.78 },
-  { id: 'works',      label: 'すべての作品',        x: 0.02, y: 0.96 },
+  { id: 'web',        label: 'Web制作',            x: 0.02, y: 0.03 },
+  { id: 'uiux',       label: 'UI/UX システム',      x: 0.10, y: 0.23 },
+  { id: 'illust',     label: 'イラスト',            x: 0.02, y: 0.43 },
+  { id: 'univ',       label: '大学時代のデザイン',  x: 0.10, y: 0.63 },
+  { id: 'works',      label: 'すべての作品',        x: 0.02, y: 0.85 },
+  // ゲームを足すときの例： { id: 'game:mygame', label: 'ゲーム\nゲームの名前', x: 0.10, y: 0.95 },
   // ── 右側：わたしのこと ──
   { id: 'about',      label: '私について.txt',      x: 0.98, y: 0.02 },
   { id: 'resume',     label: '履歴書.pdf',          x: 0.90, y: 0.19 },

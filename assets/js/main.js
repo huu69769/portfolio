@@ -50,12 +50,23 @@ function shotMedia(shot, title, kind, lazy = true) {
   return '<img src="' + esc(asset(shot)) + '" alt="' + esc(title) + 'の画面"' + (lazy ? ' loading="lazy"' : '') +
     ' decoding="async" style="position:absolute;inset:0">' + fake;
 }
-const ICON = {
-  close: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13"/></svg>',
-  min: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 12h10"/></svg>',
-  prev: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
-  next: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
+/* ---------- ドット絵のアイコン ---------- */
+const SVG = {
+  folder: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M2 6h11l3 3h14v19H2z" fill="#d9a92e"/><path d="M2 11h28v17H2z" fill="#f4cf5f"/><path d="M2 6h11l3 3h14v19H2z" fill="none" stroke="#4a3700" stroke-width="1.4"/><path d="M3 12h26" stroke="#fff3c4" stroke-width="1.2"/></svg>',
+  works: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M5 3h11l3 3h11v15H5z" fill="#c9952a" stroke="#4a3700" stroke-width="1.2"/><path d="M2 8h11l3 3h14v18H2z" fill="#d9a92e"/><path d="M2 13h28v16H2z" fill="#f4cf5f"/><path d="M2 8h11l3 3h14v18H2z" fill="none" stroke="#4a3700" stroke-width="1.4"/><path d="M9 17h14v2H9zM9 21h10v2H9z" fill="#4b3263"/></svg>',
+  web: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M2 6h11l3 3h14v19H2z" fill="#d9a92e"/><path d="M2 11h28v17H2z" fill="#f4cf5f"/><path d="M2 6h11l3 3h14v19H2z" fill="none" stroke="#4a3700" stroke-width="1.4"/><circle cx="21" cy="20" r="7" fill="#7cc4e8" stroke="#1d4a66" stroke-width="1.3"/><path d="M14 20h14M21 13v14M16 16h10M16 24h10" stroke="#1d4a66" stroke-width="1"/><ellipse cx="21" cy="20" rx="3" ry="7" fill="none" stroke="#1d4a66" stroke-width="1"/></svg>',
+  game: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M5 11h22l3 3v9l-3 3h-5l-3-3h-6l-3 3H5l-3-3v-9z" fill="#b8b2a6" stroke="#333" stroke-width="1.4"/><path d="M8 15h2v2h2v2h-2v2H8v-2H6v-2h2z" fill="#333"/><rect x="21" y="15" width="3" height="3" fill="#c2413b"/><rect x="24" y="18" width="3" height="3" fill="#4b3263"/><path d="M13 6h6v5h-6z" fill="#d8d4cb" stroke="#333"/></svg>',
+  txt: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M6 2h14l6 6v22H6z" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M20 2v6h6" fill="#ddd" stroke="#333" stroke-width="1.4"/><path d="M10 13h12M10 17h12M10 21h12M10 25h8" stroke="#4b3263" stroke-width="1.6"/></svg>',
+  pdf: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M6 2h14l6 6v22H6z" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M20 2v6h6" fill="#ddd" stroke="#333" stroke-width="1.4"/><rect x="4" y="17" width="20" height="9" fill="#c2413b"/><path d="M7 19h3v2H8v3H7zM8 19h2v2H8zM11 19h3v5h-3zM12 20h1v3h-1zM15 19h3v1h-2v1h2v1h-2v2h-1z" fill="#fff"/><path d="M12 20h1v3h-1z" fill="#c2413b"/></svg>',
+  mail: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="3" y="8" width="26" height="17" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M3 8l13 10 13-10" fill="none" stroke="#333" stroke-width="1.4"/><circle cx="25" cy="9" r="4" fill="#b27aa6" stroke="#4b3263"/></svg>',
+  img: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="3" y="5" width="26" height="22" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M5 25l8-9 6 6 4-4 4 7z" fill="#6f9c96"/><circle cx="22" cy="11" r="3" fill="#f4cf5f"/></svg>',
+  paint: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M16 3C8 3 3 9 3 16c0 6 4 10 9 10 3 0 3-3 5-3h3c5 0 9-3 9-8 0-7-6-12-13-12z" fill="#f2e6c9" stroke="#333" stroke-width="1.4"/><circle cx="10" cy="12" r="2.4" fill="#c2413b"/><circle cx="16" cy="9" r="2.4" fill="#f4cf5f"/><circle cx="22" cy="12" r="2.4" fill="#4b8fc4"/><circle cx="9" cy="19" r="2.4" fill="#6f9c96"/><rect x="18" y="16" width="5" height="4" fill="#b27aa6"/></svg>',
+  uiux: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="3" y="4" width="21" height="16" fill="#fff" stroke="#333" stroke-width="1.4"/><rect x="5" y="6" width="17" height="3" fill="#4b3263"/><rect x="5" y="11" width="7" height="7" fill="#b27aa6"/><path d="M14 12h7M14 15h7M14 18h5" stroke="#999" stroke-width="1.2"/><rect x="19" y="13" width="10" height="17" rx="1" fill="#3a3833" stroke="#333"/><rect x="21" y="15" width="6" height="11" fill="#7cc4e8"/></svg>',
+  pc: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="4" y="4" width="24" height="17" fill="#d8d4cb" stroke="#333" stroke-width="1.4"/><rect x="7" y="7" width="18" height="11" fill="#4a7a74"/><rect x="10" y="23" width="12" height="3" fill="#d8d4cb" stroke="#333"/><rect x="6" y="26" width="20" height="3" fill="#d8d4cb" stroke="#333"/></svg>',
 };
+const ICON_OF = { web: 'web', uiux: 'uiux', illust: 'paint', univ: 'folder', works: 'works', about: 'txt', contact: 'mail', resume: 'pdf' };
+const iconFor = id => SVG[id.indexOf('game:') === 0 ? 'game' : ICON_OF[id] || 'folder'];
+const KIND_ICON = { FOLDER: 'folder', BROWSER: 'web', GAME: 'game', VIEWER: 'img', TEXT: 'txt', MAIL: 'mail', WELCOME: 'pc' };
 
 /* ---------- 画像のまとまり（ビューアで順番に見る） ---------- */
 const SETS = {};
@@ -69,87 +80,54 @@ const SLIDES = WEB.map(w => Object.assign({ type: 'web' }, w))
   .concat(GAMES.map(g => Object.assign({ type: 'game' }, g)));
 
 /* ==========================================================================
-   開始の演出
+   起動画面
    ========================================================================== */
-const intro = $('#intro');
-function ready() { document.body.classList.add('ready'); }
-function endIntro() {
-  if (!intro.isConnected || intro.classList.contains('out')) return;
-  intro.classList.add('out');
-  ready();
-  setTimeout(() => intro.remove(), 400);
+const boot = $('#boot');
+const BOOT_LINES = ['LUO JIAWEN portfolio OS  ver.2026', '', 'UI/UX を読み込み中 ........ OK',
+  'イラスト を読み込み中 ...... OK', 'Web制作 を読み込み中 ....... OK', 'Web ゲーム を読み込み中 .... OK', '', 'ようこそ。'];
+let bootTimer = null, booted = false;
+function endBoot() {
+  if (booted) return;
+  booted = true;
+  clearInterval(bootTimer);
+  boot.classList.add('done');
+  setTimeout(() => boot.remove(), 400);
+  document.body.classList.add('ready');
 }
 let seen = false;
-try { seen = sessionStorage.getItem('luo-intro') === '1'; sessionStorage.setItem('luo-intro', '1'); } catch (e) { /* 気にしない */ }
-if (reduce || seen) { intro.remove(); ready(); }
+try { seen = sessionStorage.getItem('luo-boot') === '1'; sessionStorage.setItem('luo-boot', '1'); } catch (e) { /* 気にしない */ }
+if (reduce || seen) { boot.remove(); booted = true; document.body.classList.add('ready'); }
 else {
-  const dur = isMobile() ? 850 : 1500;           // スマホは短めに
-  intro.style.setProperty('--d', dur + 'ms');
-  setTimeout(endIntro, dur + 200);
-  intro.addEventListener('pointerdown', endIntro);
-  addEventListener('keydown', endIntro, { once: true });
+  // スマホは約1秒、PCは約1.6秒
+  const step = isMobile() ? 90 : 160;
+  let i = 0;
+  bootTimer = setInterval(() => {
+    const p = document.createElement('p');
+    p.textContent = BOOT_LINES[i] || '\u00a0';
+    $('#bootLines').appendChild(p);
+    if (++i >= BOOT_LINES.length) { clearInterval(bootTimer); setTimeout(endBoot, isMobile() ? 200 : 380); }
+  }, step);
+  boot.addEventListener('pointerdown', endBoot);
+  addEventListener('keydown', endBoot, { once: true });
 }
 
 /* ==========================================================================
-   机の上の作品（ドラッグで動かせる・位置は保存）
+   デスクトップのアイコン（ドラッグで動かせる・位置は保存）
    ========================================================================== */
 const desk = $('#desk');
 const entriesBox = $('#entries');
-const POS_KEY = 'luo-desk-pos-v1';
+const POS_KEY = 'luo-desk-pos-v2';
 const savedPos = store.get(POS_KEY) || {};
 const rand = (a, b) => a + Math.random() * (b - a);
 const clamp01 = v => Math.min(1, Math.max(0, v));
 
-function thing(id) {
-  if (id === 'web') {
-    const w = WEB[0];
-    return '<span class="o-browser"><span class="o-bar"><i></i><i></i><i></i></span><span class="o-screen">' +
-      (w && w.shot ? '<img src="' + esc(asset(w.shot)) + '" alt="">' : '') + '<span class="o-www">www</span></span></span>';
-  }
-  if (id.indexOf('game:') === 0) {
-    const g = GAMES.find(x => 'game:' + x.id === id) || {};
-    const color = ['var(--pink)', 'var(--blue)', 'var(--red)', '#3ccf8e'][GAMES.indexOf(g) % 4];
-    return '<span class="o-cart"><span class="o-cart-label" style="--c:' + color + '">' +
-      (g.shot ? '<img src="' + esc(asset(g.shot)) + '" alt="">' : '<span style="flex:1"></span>') +
-      '<b>GAME</b></span></span><span class="o-cart-play">PLAY ▶</span>';
-  }
-  if (id === 'uiux') {
-    return '<span class="o-tabs">' + UIUX.slice(0, 2).reverse().map(p =>
-      '<span class="o-tab"><img src="' + pic(p.items[0].src, 'sm') + '" data-fallback="' + orig(p.items[0].src) + '" alt=""></span>').join('') + '</span>';
-  }
-  if (id === 'illust') {
-    return '<span class="o-sketch"><img src="' + pic(ILLUST[0].src, 'sm') + '" data-fallback="' + orig(ILLUST[0].src) + '" alt=""></span>';
-  }
-  if (id === 'univ') {
-    return '<span class="o-polas">' + [UNIV[3], UNIV[1]].filter(Boolean).map(it =>
-      '<span class="o-pola"><img src="' + pic(it.src, 'sm') + '" data-fallback="' + orig(it.src) + '" alt=""></span>').join('') + '</span>';
-  }
-  if (id === 'works') {
-    return '<span class="o-folder"><span class="o-folder-paper"></span><span class="o-folder-paper"></span>' +
-      '<span class="o-folder-front"><b>WORKS</b><small>ALL ' + countWorks() + '</small></span></span>';
-  }
-  if (id === 'about') {
-    return '<span class="o-id"><span class="o-id-head"><span>ID</span><span>PROFILE</span></span>' +
-      '<img src="' + pic(PROFILE.avatar, 'sm') + '" data-fallback="' + orig(PROFILE.avatar) + '" alt="">' +
-      '<span class="o-id-lines"><i></i><i></i><i></i><i></i></span></span>';
-  }
-  if (id === 'contact') {
-    return '<span class="o-mail"><svg viewBox="0 0 100 64" preserveAspectRatio="none"><path d="M0 0L50 36L100 0" fill="none" stroke="#1d1d1b" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>' +
-      '<span class="o-mail-stamp">〒</span></span>';
-  }
-  if (id === 'resume') {
-    return '<span class="o-doc"><b>履歴書</b><i></i><i></i><i></i><i></i><i></i><span class="o-doc-pdf">PDF</span></span>';
-  }
-  return '';
-}
 function countWorks() { return WEB.length + GAMES.length + UIUX.length + UNIV.length + ILLUST.length; }
 
 const entries = DESK.map((d, i) => {
   const isLink = d.id === 'resume';
   const el = document.createElement(isLink ? 'a' : 'button');
-  el.className = 'entry';
+  el.className = 'entry icon';
   el.dataset.id = d.id;
-  el.style.setProperty('--r', rand(-7, 7).toFixed(1) + 'deg');   // 角度だけランダム
   el.style.setProperty('--i', i);
   let extra = '';
   if (isLink) {
@@ -160,19 +138,23 @@ const entries = DESK.map((d, i) => {
     el.dataset.open = d.id;
   }
   const g = d.id.indexOf('game:') === 0 && GAMES.find(x => 'game:' + x.id === d.id);
-  const preview = g ? '<span class="preview" aria-hidden="true">' + (g.shot ? '<img src="' + esc(asset(g.shot)) + '" alt="" loading="lazy">' : '') +
+  const preview = g ? '<span class="preview out" aria-hidden="true">' + (g.shot ? '<img src="' + esc(asset(g.shot)) + '" alt="" loading="lazy">' : '') +
     '<span>▶ ' + esc(g.desc) + '</span></span>' : '';
-  el.innerHTML = '<span class="thing" aria-hidden="true">' + thing(d.id) + '</span>' + preview +
-    '<span class="tape">' + esc(d.label) + extra + '</span>';
+  el.innerHTML = '<span class="ico" aria-hidden="true">' + iconFor(d.id) + (g ? '<i class="ico-badge">▶</i>' : '') + '</span>' + preview +
+    '<span class="lbl">' + esc(d.label) + extra + '</span>';
   if (g) el.setAttribute('aria-label', d.label + '（Web ゲーム）');
   // 決めた位置 ＋ ほんの少しだけずらす（設計されたランダム）
-  el._home = { x: clamp01(d.x + rand(-0.012, 0.012)), y: clamp01(d.y + rand(-0.012, 0.012)) };
+  el._home = { x: clamp01(d.x + rand(-0.015, 0.015)), y: clamp01(d.y + rand(-0.015, 0.015)) };
   el._pos = savedPos[d.id] || el._home;
   entriesBox.appendChild(el);
   makeEntryDraggable(el);
   // 画面の上のほうにあるときは、プレビューを下に出す
   if (g) {
-    const flip = () => el.classList.toggle('preview-below', el.getBoundingClientRect().top < 280);
+    const flip = () => {
+      const r = el.getBoundingClientRect();
+      el.classList.toggle('preview-left', r.left > innerWidth / 2);
+      el.classList.toggle('preview-up', r.top > innerHeight - 330);
+    };
     el.addEventListener('pointerenter', flip);
     el.addEventListener('focus', flip);
   }
@@ -199,6 +181,7 @@ let entryZ = 1;
 function makeEntryDraggable(el) {
   let start = null;
   el.addEventListener('pointerdown', e => {
+    entries.forEach(x => x.classList.toggle('selected', x === el));
     if (isMobile() || e.button !== 0) return;
     const r = el.getBoundingClientRect();
     start = { id: e.pointerId, x: e.clientX, y: e.clientY, l: el.offsetLeft, t: el.offsetTop, moved: false, w: r.width };
@@ -244,9 +227,11 @@ function resetDesk() {
   entries.forEach(el => { el._pos = el._home; el.classList.add('settle'); });
   layoutEntries();
   setTimeout(() => entries.forEach(el => el.classList.remove('settle')), 500);
-  say('作品を最初の位置に並べ直しました');
+  say('アイコンを最初の位置に並べ直しました');
 }
-$('#resetDesk').addEventListener('click', resetDesk);
+desk.addEventListener('pointerdown', e => {
+  if (!e.target.closest('.entry')) entries.forEach(x => x.classList.remove('selected'));
+});
 
 /* ==========================================================================
    ウィンドウ（シート）
@@ -254,7 +239,6 @@ $('#resetDesk').addEventListener('click', resetDesk);
 const tabsBox = $('#tabs');
 const sheets = new Map();
 let zTop = 100, cascade = 0, uid = 0;
-const KIND_COLOR = { FOLDER: 'var(--yellow)', BROWSER: '#8fc1ff', GAME: '#ff9f9c', VIEWER: '#ffb3d8', TEXT: '#fff', MAIL: '#b9ebd2' };
 
 function openSheet(id, o) {
   let el = sheets.get(id);
@@ -270,28 +254,28 @@ function openSheet(id, o) {
   }
   const tid = 'sheet-t-' + (++uid);
   el = document.createElement('section');
-  el.className = 'sheet';
+  const ico = SVG[KIND_ICON[o.kind] || 'folder'];
+  el.className = 'sheet win out' + (o.cls ? ' ' + o.cls : '');
   el.dataset.id = id;
   el.setAttribute('role', 'dialog');
   el.setAttribute('aria-labelledby', tid);
-  el.style.setProperty('--k', KIND_COLOR[o.kind] || '#fff');
   el.innerHTML =
-    '<header class="sheet-bar"><span class="sheet-kind" aria-hidden="true">' + o.kind + '</span>' +
+    '<header class="sheet-bar titlebar"><span class="t-ico" aria-hidden="true">' + ico + '</span>' +
     '<h2 class="sheet-title" id="' + tid + '" tabindex="-1">' + esc(o.title) + '</h2>' +
-    '<button class="sbtn" data-act="min" aria-label="しまう">' + ICON.min + '</button>' +
-    '<button class="sbtn" data-act="close" aria-label="閉じる">' + ICON.close + '</button></header>' +
-    '<div class="sheet-body">' + o.body + '</div>' +
-    (o.status !== undefined ? '<div class="sheet-foot">' + esc(o.status) + '</div>' : '');
+    '<button class="btn sbtn" data-act="min" aria-label="最小化"><span aria-hidden="true">_</span></button>' +
+    '<button class="btn sbtn" data-act="close" aria-label="閉じる"><span aria-hidden="true">×</span></button></header>' +
+    '<div class="sheet-body' + (o.inset === false ? '' : ' in') + '">' + o.body + '</div>' +
+    (o.status !== undefined ? '<div class="sheet-foot statusbar">' + esc(o.status) + '</div>' : '');
+  if (o.node) $('.sheet-body', el).appendChild(o.node);
   el._opener = document.activeElement;
   el.style.visibility = 'hidden';
-  desk.appendChild(el);
+  if (o.before) desk.insertBefore(el, o.before); else desk.appendChild(el);
   el.style.width = Math.min(o.w || 600, desk.clientWidth - 24) + 'px';
 
-  // 下の定規に「開いているもの」として並べる
+  // タスクバーに「開いているもの」として並べる
   const tab = document.createElement('button');
-  tab.className = 'rbtn tab';
-  tab.style.setProperty('--k', KIND_COLOR[o.kind] || '#fff');
-  tab.innerHTML = '<span class="tk" aria-hidden="true">' + o.kind.slice(0, 1) + '</span><span class="tl">' + esc(o.title) + '</span>';
+  tab.className = 'btn tab';
+  tab.innerHTML = '<span class="tk" aria-hidden="true">' + ico + '</span><span class="tl">' + esc(o.title) + '</span>';
   tab.addEventListener('click', () => {
     if (el.hidden) showSheet(el, true);
     else if (el.classList.contains('active')) minimize(el);
@@ -308,13 +292,13 @@ function openSheet(id, o) {
   sheets.set(id, el);
   if (o.init) o.init(el);
 
-  // 位置：中身が入ってから測って、中央から少しずつずらして重ねる
+  // 位置：中身が入ってから測る。真ん中 or 少しずつずらして重ねる
   const W = desk.clientWidth, H = desk.clientHeight;
-  const step = (cascade++ % 5) * 30;
-  el.style.left = Math.max(12, Math.min((W - el.offsetWidth) / 2 + step - 60, W - el.offsetWidth - 12)) + 'px';
-  el.style.top = Math.max(12, Math.min((H - el.offsetHeight) / 2 + step - 50, H - el.offsetHeight - 12)) + 'px';
+  const step = o.center ? 0 : (cascade++ % 5) * 28;
+  el.style.left = Math.max(8, Math.min((W - el.offsetWidth) / 2 + step - (o.center ? 0 : 50), W - el.offsetWidth - 8)) + 'px';
+  el.style.top = Math.max(8, Math.min((H - el.offsetHeight) / 2 + step - (o.center ? 10 : 40), H - el.offsetHeight - 8)) + 'px';
   el.style.visibility = '';
-  showSheet(el, true);
+  showSheet(el, !o.noFocus);
   updateNav();
   return el;
 }
@@ -330,16 +314,18 @@ function showSheet(el, moveFocus) {
   updateNav();
 }
 function focusSheet(el) {
-  sheets.forEach(s => { s.classList.remove('active'); s._tab.setAttribute('aria-pressed', 'false'); });
+  sheets.forEach(s => { s.classList.remove('active'); s._tab.setAttribute('aria-pressed', 'false'); s._tab.classList.remove('pressed'); });
   el.style.zIndex = ++zTop;
   el.classList.add('active');
   el._tab.setAttribute('aria-pressed', 'true');
+  el._tab.classList.add('pressed');
   if (el._onFocus) el._onFocus();
 }
 function minimize(el) {
   el.hidden = true;
   el.classList.remove('active');
   el._tab.setAttribute('aria-pressed', 'false');
+  el._tab.classList.remove('pressed');
   el._tab.classList.add('is-min');
   if (el._onHide) el._onHide();
   const top = topSheet();
@@ -366,7 +352,10 @@ function closeSheet(id) {
 }
 function topSheet() {
   let best = null;
-  sheets.forEach(s => { if (!s.hidden && (!best || +s.style.zIndex > +best.style.zIndex)) best = s; });
+  sheets.forEach(s => {
+    if (s.hidden || (isMobile() && s.classList.contains('is-welcome'))) return;   // スマホのようこそはホーム画面の一部
+    if (!best || +s.style.zIndex > +best.style.zIndex) best = s;
+  });
   return best;
 }
 // 中身が大きくなったときに、画面の下からはみ出さないように持ち上げる
@@ -379,6 +368,7 @@ function makeSheetDraggable(el) {
   const bar = $('.sheet-bar', el);
   bar.addEventListener('pointerdown', e => {
     if (e.target.closest('button') || isMobile() || el.classList.contains('maxed') || e.button !== 0) return;
+    focusSheet(el);
     const W = desk.clientWidth, H = desk.clientHeight;
     const sx = e.clientX, sy = e.clientY, l = el.offsetLeft, t = el.offsetTop, w = el.offsetWidth;
     bar.setPointerCapture(e.pointerId);
@@ -386,7 +376,7 @@ function makeSheetDraggable(el) {
     const move = ev => {
       // ウィンドウが画面の外に行きすぎないように（タイトルバーは必ずつかめる位置に）
       const x = Math.min(W - 120, Math.max(120 - w, l + ev.clientX - sx));
-      const y = Math.min(H - 46, Math.max(0, t + ev.clientY - sy));
+      const y = Math.min(H - 30, Math.max(0, t + ev.clientY - sy));
       el.style.left = x + 'px'; el.style.top = y + 'px';
     };
     const up = () => {
@@ -416,13 +406,14 @@ const mBack = $('#mBack');
 function updateNav() { mBack.disabled = !topSheet(); }
 mBack.addEventListener('click', () => { const t = topSheet(); if (t) closeSheet(t.dataset.id); });
 $('#mHome').addEventListener('click', () => {
-  Array.from(sheets.keys()).forEach(closeSheet);
+  Array.from(sheets.keys()).forEach(id => { if (id !== 'welcome') closeSheet(id); });
   desk.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
 });
 
 // Esc で一番手前のウィンドウを閉じる
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape' || document.fullscreenElement) return;
+  if (!startMenu.hidden) { toggleStart(false); startBtn.focus(); return; }
   const t = topSheet();
   if (t) { e.preventDefault(); closeSheet(t.dataset.id); }
 });
@@ -449,7 +440,7 @@ function openWorks(cat) {
   const chips = [{ id: 'all', label: 'すべて' }].concat(CATEGORIES).map(c =>
     '<button class="chip" data-cat="' + c.id + '" aria-pressed="false">' + esc(c.label) + '</button>').join('');
   const el = openSheet('works', {
-    title: '作品一覧', kind: 'FOLDER', w: 860, status: countWorks() + ' 件の作品',
+    title: 'すべての作品', kind: 'FOLDER', w: 860, status: countWorks() + ' 件の作品',
     body: '<div class="filters" role="group" aria-label="作品の分類">' + chips + '</div>' + CATEGORIES.map(c => catSection(c.id)).join(''),
     init: sheet => {
       sheet._filter = c => {
@@ -485,7 +476,7 @@ function slideHTML(s, i, n) {
       '<button class="shot" data-open="game:' + esc(s.id) + '">' + shotMedia(s.shot, s.title, 'game') + '<span class="shot-play" aria-hidden="true">▶ PLAY</span></button>' +
       '<div class="slide-info"><p class="slide-kind game">Web ゲーム</p><h3>' + esc(s.title) + '</h3><p>' + esc(s.desc) + '</p>' +
       '<p class="role">' + (s.control === 'keyboard' ? 'キーボードで遊ぶゲーム' : 'タッチ・マウスで遊ぶゲーム') + '</p>' +
-      '<div class="slide-actions"><button class="btn btn-red" data-open="game:' + esc(s.id) + '">▶ ウィンドウで遊ぶ</button>' +
+      '<div class="slide-actions"><button class="btn btn-main" data-open="game:' + esc(s.id) + '">▶ ウィンドウで遊ぶ</button>' +
       '<a class="btn" href="' + esc(s.url) + '" target="_blank" rel="noopener">新しいタブで開く ↗</a></div></div></div>';
   }
   return '<div class="slide" role="group" aria-roledescription="スライド" aria-label="' + esc(label) + '">' +
@@ -493,7 +484,7 @@ function slideHTML(s, i, n) {
     '<span class="sr-only">（サイトを新しいタブで開きます）</span></a>' +
     '<div class="slide-info"><p class="slide-kind">Web制作</p><h3>' + esc(s.title) + '</h3><p>' + esc(s.desc) + '</p>' +
     (s.role ? '<p class="role">担当：' + esc(s.role) + '</p>' : '') + tags +
-    '<div class="slide-actions"><a class="btn btn-ink" href="' + esc(s.url) + '" target="_blank" rel="noopener">サイトを見る ↗</a>' +
+    '<div class="slide-actions"><a class="btn btn-main" href="' + esc(s.url) + '" target="_blank" rel="noopener">サイトを見る ↗</a>' +
     (s.repo ? '<a class="btn" href="' + esc(s.repo) + '" target="_blank" rel="noopener">GitHub ↗</a>' : '') + '</div></div></div>';
 }
 
@@ -502,16 +493,16 @@ function openWeb(start) {
   if (existing) { showSheet(existing, true); if (start !== null) existing._show(start); return; }
   const n = SLIDES.length;
   openSheet('web', {
-    title: 'Web制作', kind: 'BROWSER', w: 720,
+    title: 'Web制作 - ブラウザ', kind: 'BROWSER', w: 700, inset: false,
     status: '画像を選ぶと、サイトが新しいタブで開きます',
     body:
-      '<div class="addr"><span class="addr-dots" aria-hidden="true"><i></i><i></i><i></i></span>' +
-      '<span class="addr-field" aria-label="表示中のサイトのアドレス"></span>' +
+      '<div class="addr"><span aria-hidden="true">アドレス</span>' +
+      '<span class="addr-field in" aria-label="表示中のサイトのアドレス"></span>' +
       '<a class="btn addr-go" target="_blank" rel="noopener">開く ↗</a></div>' +
       '<div class="car" role="region" aria-roledescription="カルーセル" aria-label="Web制作とWeb ゲーム">' +
-      '<div class="car-view"><div class="car-track">' + SLIDES.map((s, i) => slideHTML(s, i, n)).join('') + '</div></div>' +
-      '<div class="car-nav"><button class="car-arrow prev" aria-label="前の作品">' + ICON.prev + '</button>' +
-      '<button class="car-arrow next" aria-label="次の作品">' + ICON.next + '</button></div>' +
+      '<div class="car-view in"><div class="car-track">' + SLIDES.map((s, i) => slideHTML(s, i, n)).join('') + '</div></div>' +
+      '<div class="car-nav"><button class="btn car-arrow prev" aria-label="前の作品">‹</button>' +
+      '<button class="btn car-arrow next" aria-label="次の作品">›</button></div>' +
       '<div class="dots">' + SLIDES.map((s, i) =>
         '<button class="dot' + (s.type === 'game' ? ' game' : '') + '" aria-label="' + (i + 1) + '番目：' + esc(s.title) + '"></button>').join('') + '</div></div>',
     init: el => initCarousel(el, start || 0),
@@ -579,19 +570,19 @@ function initCarousel(el, start) {
 function openGame(id) {
   const g = GAMES.find(x => x.id === id);
   if (!g) return;
-  openSheet('game:' + id, { title: g.title, kind: 'GAME', w: 780, body: '', init: el => gameTitle(el, g) });
+  openSheet('game:' + id, { title: g.title + ' - ゲーム', kind: 'GAME', w: 760, body: '', init: el => gameTitle(el, g) });
 }
 function gameTitle(el, g) {
   const pcOnly = g.control === 'keyboard' && (isMobile() || touchOnly());
   const body = $('.sheet-body', el);
   body.innerHTML =
-    '<div class="g-title"><' + (pcOnly ? 'div' : 'button tabindex="-1"') + ' class="g-shot">' +
+    '<div class="g-title"><' + (pcOnly ? 'div' : 'button tabindex="-1"') + ' class="g-shot in">' +
     (g.shot ? '<img src="' + esc(asset(g.shot)) + '" alt="' + esc(g.title) + 'のタイトル画面">' : shotMedia('', g.title, 'game')) +
     '</' + (pcOnly ? 'div' : 'button') + '>' +
     '<div class="g-meta"><p class="g-ctrl">' + (g.control === 'keyboard' ? '⌨ キーボードで遊ぶ' : '☝ タッチ・マウスで遊ぶ') + '</p>' +
     '<h3>' + esc(g.title) + '</h3><p>' + esc(g.desc) + '</p>' +
     (pcOnly ? '<p class="g-pc">このゲームはPCで遊べます</p>' : '') +
-    '<div class="row">' + (pcOnly ? '' : '<button class="btn btn-red g-start">▶ プレイする</button>') +
+    '<div class="row">' + (pcOnly ? '' : '<button class="btn btn-main g-start">▶ プレイする</button>') +
     '<a class="btn" href="' + esc(g.url) + '" target="_blank" rel="noopener">新しいタブで開く ↗</a></div></div></div>';
   const startBtn = $('.g-start', body);
   if (startBtn) {
@@ -605,7 +596,7 @@ function gamePlay(el, g) {
   const kb = g.control === 'keyboard';
   const body = $('.sheet-body', el);
   body.innerHTML =
-    '<div class="g-play"><div class="g-stage">' +
+    '<div class="g-play"><div class="g-stage in">' +
     '<iframe src="' + esc(g.url) + '" title="' + esc(g.title) + '（ゲーム）" allow="fullscreen; autoplay"></iframe>' +
     (kb ? '<button class="g-cover"><b>▶ ここを押して操作をはじめる</b><small>矢印キーやスペースキーは、ゲームの中だけで使われます</small></button>' : '') +
     '</div><div class="g-tools"><button class="btn g-full">⛶ 全画面</button>' +
@@ -659,14 +650,14 @@ function openViewer(setId, i) {
   const title = set.title + (set.sub ? ' — ' + set.sub : '');
   let el = sheets.get('viewer');
   if (!el || el._set !== setId) {
-    const body = '<div class="viewer"><div class="v-stage"><img class="v-img" alt=""></div>' +
+    const body = '<div class="viewer"><div class="v-stage in"><img class="v-img" alt=""></div>' +
       '<div class="v-bar"><button class="btn v-prev">‹ 前へ</button>' +
       '<p class="v-cap"><span class="v-text"></span><span class="v-count"></span></p>' +
       '<button class="btn v-next">次へ ›</button></div>' +
       (n > 1 ? '<div class="v-thumbs" role="group" aria-label="一覧">' + set.items.map((it, k) =>
         '<button class="v-thumb" data-k="' + k + '" aria-label="' + (k + 1) + '枚目：' + esc(it.cap || set.title) + '">' +
         imgTag(it.src, 'sm', '') + '</button>').join('') + '</div>' : '') + '</div>';
-    el = openSheet('viewer', { title, kind: 'VIEWER', w: 940, refresh: true, body, init: initViewer, status: '← → キー・スワイプでもめくれます' });
+    el = openSheet('viewer', { title, kind: 'VIEWER', w: 900, refresh: true, inset: false, body, init: initViewer, status: '← → キー・スワイプでもめくれます' });
     el._set = setId;
   } else {
     showSheet(el, false);
@@ -719,14 +710,14 @@ document.addEventListener('keydown', e => {
    ========================================================================== */
 function openAbout() {
   openSheet('about', {
-    title: '私について', kind: 'TEXT', w: 680,
+    title: '私について.txt - メモ帳', kind: 'TEXT', w: 660,
     body:
       '<div class="about"><figure class="about-photo">' + imgTag(PROFILE.avatar, 'sm', 'ルオ ジアウェンの写真', false) + '</figure><div>' +
       '<p class="kicker">PROFILE</p><h3 class="about-name">' + esc(PROFILE.name) + '</h3>' +
       PROFILE.bio.map(p => '<p>' + esc(p) + '</p>').join('') +
-      '<div class="row"><a class="btn btn-ink" href="' + esc(asset(PROFILE.resume)) + '" target="_blank" rel="noopener">履歴書をダウンロード</a>' +
+      '<div class="row"><a class="btn btn-main" href="' + esc(asset(PROFILE.resume)) + '" target="_blank" rel="noopener">履歴書をダウンロード</a>' +
       '<a class="btn" href="' + esc(PROFILE.aboutMe) + '" target="_blank" rel="noopener">詳しく ↗</a></div></div></div>' +
-      '<section class="exp"><h3>経歴 / Experience</h3><ol class="timeline">' + EXPERIENCE.map(x =>
+      '<section class="exp out"><h3>経歴 / Experience</h3><ol class="timeline">' + EXPERIENCE.map(x =>
         '<li><p class="t-period">' + esc(x.period) + '</p><p class="t-title">' + esc(x.title) + '</p><p class="t-text">' + esc(x.text) + '</p></li>').join('') +
       '</ol></section>',
   });
@@ -735,14 +726,14 @@ function openContact() {
   const mail = PROFILE.email;
   const href = 'mailto:' + mail + '?subject=' + encodeURIComponent('お仕事のご相談');
   const el = openSheet('contact', {
-    title: 'お問い合わせ', kind: 'MAIL', w: 560,
+    title: 'お問い合わせ - 新規メッセージ', kind: 'MAIL', w: 520, inset: false,
     body:
-      '<div class="mail"><span class="mail-stamp" aria-hidden="true">〒</span>' +
-      '<dl class="mail-head"><div><dt>宛先</dt><dd><a href="' + esc(href) + '">' + esc(mail) + '</a></dd></div>' +
-      '<div><dt>件名</dt><dd>お仕事のご相談</dd></div></dl>' +
-      '<p class="mail-lead">' + esc(PROFILE.contactLead) + '</p>' +
-      '<p class="mail-thanks">' + esc(PROFILE.thanks) + '</p>' +
-      '<div class="row"><a class="btn btn-ink" href="' + esc(href) + '">メールを書く</a>' +
+      '<div class="mail">' +
+      '<dl class="mail-head"><div><dt>宛先:</dt><dd class="in"><a href="' + esc(href) + '">' + esc(mail) + '</a></dd></div>' +
+      '<div><dt>件名:</dt><dd class="in">お仕事のご相談</dd></div></dl>' +
+      '<div class="mail-body in"><p class="mail-lead">' + esc(PROFILE.contactLead) + '</p>' +
+      '<p class="mail-thanks">' + esc(PROFILE.thanks) + '</p></div>' +
+      '<div class="row"><a class="btn btn-main" href="' + esc(href) + '">メールを書く</a>' +
       '<button class="btn mail-copy">アドレスをコピー</button></div></div>',
   });
   const copy = $('.mail-copy', el);
@@ -758,6 +749,8 @@ function openContact() {
    ========================================================================== */
 function open(id, d) {
   d = d || {};
+  toggleStart(false);
+  if (id === 'welcome') return openWelcome();
   if (id === 'works') return openWorks(d.cat);
   if (id === 'web') return openWeb(d.index !== undefined ? +d.index : null);
   if (id.indexOf('game:') === 0) return openGame(id.slice(5));
@@ -772,13 +765,65 @@ document.addEventListener('click', e => {
   if (o) open(o.dataset.open, o.dataset);
 });
 
-// PC では机がスクロールしないように（フォーカス移動などで勝手に動くのを防ぐ）
+/* ==========================================================================
+   ようこそ.exe（自己紹介）
+   ========================================================================== */
+const hero = $('#hero');
+function openWelcome(first) {
+  openSheet('welcome', {
+    title: 'ようこそ.exe', kind: 'WELCOME', w: 580, center: true, cls: 'is-welcome',
+    body: '', node: hero, before: entriesBox, noFocus: !!first, inset: false,
+  });
+}
+
+/* ==========================================================================
+   スタートメニュー・時計
+   ========================================================================== */
+const startBtn = $('#startBtn');
+const startMenu = $('#startMenu');
+startBtn.innerHTML = SVG.pc + '<span>スタート</span>';
+$$('[data-ico]').forEach(s => { s.innerHTML = SVG[s.dataset.ico]; });
+$('#smList').innerHTML =
+  DESK.map(d => d.id === 'resume'
+    ? '<a role="menuitem" href="' + esc(asset(PROFILE.resume)) + '" target="_blank" rel="noopener">' + SVG.pdf + '<span>履歴書をダウンロード</span></a>'
+    : '<button role="menuitem" data-open="' + esc(d.id) + '">' + iconFor(d.id) + '<span>' + esc(d.label) + '</span></button>').join('') +
+  '<div class="sm-sep" role="separator"></div>' +
+  '<button role="menuitem" data-open="welcome">' + SVG.pc + '<span>ようこそ画面</span></button>' +
+  '<button role="menuitem" id="resetIcons">' + SVG.pc + '<span>アイコンを並べ直す</span></button>';
+$('#resetIcons').addEventListener('click', () => { resetDesk(); toggleStart(false); });
+function toggleStart(force) {
+  const show = force !== undefined ? force : startMenu.hidden;
+  if (show === !startMenu.hidden) return;
+  startMenu.hidden = !show;
+  startBtn.classList.toggle('pressed', show);
+  startBtn.setAttribute('aria-expanded', String(show));
+  if (show) { startMenu.style.zIndex = ++zTop + 1000; $('#smList > *').focus(); }
+}
+startBtn.addEventListener('click', e => { e.stopPropagation(); toggleStart(); });
+document.addEventListener('pointerdown', e => {
+  if (!startMenu.hidden && !startMenu.contains(e.target) && !startBtn.contains(e.target)) toggleStart(false);
+});
+// メニューの中は上下キーで移動できる
+startMenu.addEventListener('keydown', e => {
+  if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+  e.preventDefault();
+  const items = $$('#smList > a, #smList > button');
+  const k = items.indexOf(document.activeElement);
+  items[(k + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length].focus();
+});
+startMenu.addEventListener('focusout', e => { if (!startMenu.contains(e.relatedTarget) && e.relatedTarget !== startBtn) toggleStart(false); });
+const clock = $('#clock');
+function tick() { const d = new Date(); clock.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+tick(); setInterval(tick, 20000);
+
+// PC ではデスクトップがスクロールしないように（フォーカス移動などで勝手に動くのを防ぐ）
 desk.addEventListener('scroll', () => { if (!isMobile() && (desk.scrollTop || desk.scrollLeft)) desk.scrollTop = desk.scrollLeft = 0; });
 
 /* ---------- 画面サイズが変わったとき ---------- */
 let rz = 0;
 addEventListener('resize', () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => { layoutEntries(); keepSheetsInView(); }); });
 layoutEntries();
+openWelcome(true);
 // フォントが読み込まれて大きさが変わったら並べ直す
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutEntries);
 updateNav();

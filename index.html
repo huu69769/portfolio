@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>LUO JIAWEN ポートフォリオ｜UI/UX・イラスト・Web制作</title>
+<meta name="description" content="UI/UXデザイン、イラスト、グラフィック、Web制作を手がける罗嘉雯（ルオ ジアウェン）のポートフォリオ。デザインから実装まで、自分の手でつくっています。">
+<meta name="theme-color" content="#2c5a4c">
+
+<!-- SNS でシェアされたときの表示（OGP） -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="LUO JIAWEN ポートフォリオ｜UI/UX・イラスト・Web制作">
+<meta property="og:description" content="作業机の上に、作品を並べました。UI/UX・イラスト・グラフィック・Web制作・Webゲームのポートフォリオ。">
+<!-- ※ 公開URLが変わったら、下の2行のURLも変えてください -->
+<meta property="og:url" content="https://huu69769.github.io/portfolio/">
+<meta property="og:image" content="https://huu69769.github.io/portfolio/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='5' width='28' height='22' rx='4' fill='%23fff' stroke='%231d1d1b' stroke-width='2'/%3E%3Cpath d='M3 10a4 4 0 0 1 4-4h18a4 4 0 0 1 4 4v4H3z' fill='%23e5322d'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Permanent+Marker&family=Space+Mono:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- 開始の演出（印刷の版がずれて → ぴたっと合う）。押すとスキップ -->
+<div id="intro" aria-hidden="true">
+  <div class="intro-plates">
+    <span class="plate c">LUO JIAWEN</span>
+    <span class="plate m">LUO JIAWEN</span>
+    <span class="plate y">LUO JIAWEN</span>
+    <span class="plate k">LUO JIAWEN</span>
+  </div>
+  <p class="intro-cap">PORTFOLIO — PRINTING <span class="intro-bar"><i></i><i></i><i></i><i></i></span></p>
+  <span class="reg tl"></span><span class="reg tr"></span><span class="reg bl"></span><span class="reg br"></span>
+  <span class="intro-skip">押すとスキップ</span>
+</div>
+
+<main id="desk" class="desk">
+  <!-- 背景の飾り（カッティングマットの目盛り・角度線）。読み上げ対象外 -->
+  <div class="mat-deco" aria-hidden="true">
+    <svg class="mat-angles" viewBox="0 0 400 400" preserveAspectRatio="none">
+      <path d="M0 400L400 0M0 300L300 0M100 400L400 100" />
+    </svg>
+    <div class="mat-ruler-top"></div>
+    <div class="mat-ruler-left"></div>
+    <span class="mat-stamp">CUTTING MAT — A2 — 1 GRID = 1 cm</span>
+  </div>
+
+  <!-- 名札（自己紹介） -->
+  <section class="nametag" aria-labelledby="hero-title">
+    <h1 id="hero-title" class="nt-title">
+      <span class="nt-band"><span class="nt-hello">HELLO</span> <span class="nt-my">MY NAME IS</span></span>
+      <span class="nt-name">LUO JIAWEN</span>
+    </h1>
+    <ul class="nt-fields" aria-label="制作領域">
+      <li><button class="field" data-open="uiux"><b>UI/UX</b><span>システム設計</span></button></li>
+      <li><button class="field" data-open="illust"><b>Illustration</b><span>イラスト制作</span></button></li>
+      <li><button class="field" data-open="univ"><b>Graphic</b><span>大学時代の作品</span></button></li>
+    </ul>
+    <div class="nt-cta">
+      <button class="btn btn-ink" data-open="works">作品を見る</button>
+      <button class="btn" data-open="contact">お問い合わせ</button>
+    </div>
+  </section>
+
+  <!-- 机の上の作品たち（中身は assets/js/data.js の DESK から作られます） -->
+  <div id="entries" class="entries" aria-label="作品と情報"></div>
+</main>
+
+<!-- 下の定規（ナビ ＋ 開いているウィンドウの一覧） -->
+<nav class="ruler" aria-label="メインナビゲーション">
+  <button class="rbtn m-only" id="mBack" disabled>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>もどる</span></button>
+  <button class="rbtn m-only" id="mHome">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7M6 10v10h12V10"/></svg><span>ホーム</span></button>
+  <span class="ruler-brand d-only" aria-hidden="true">LUO JIAWEN</span>
+  <button class="rbtn" data-open="works">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h7l2 2h9v11H3z"/></svg><span>作品</span></button>
+  <button class="rbtn" data-open="about">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span>私について</span></button>
+  <button class="rbtn" data-open="contact">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="13"/><path d="M3 7l9 7 9-7"/></svg><span>お問い合わせ</span></button>
+  <div id="tabs" class="tabs d-only" aria-label="開いているウィンドウ"></div>
+  <button class="rbtn d-only" id="resetDesk" title="作品の位置を最初に戻します">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v5h5"/></svg><span>並べ直す</span></button>
+</nav>
+
+<p id="live" class="sr-only" aria-live="polite"></p>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -476,7 +476,7 @@ function slideHTML(s, i, n) {
       '<button class="shot" data-open="game:' + esc(s.id) + '">' + shotMedia(s.shot, s.title, 'game') + '</button>' +
       '<div class="slide-info"><p class="slide-kind">Web ゲーム</p><h3>' + esc(s.title) + '</h3><p>' + esc(s.desc) + '</p>' +
       '<p class="role">' + (s.control === 'keyboard' ? 'キーボードで遊ぶゲーム' : 'タッチ・マウスで遊ぶゲーム') + '</p>' +
-      '<div class="slide-actions"><button class="btn btn-main" data-open="game:' + esc(s.id) + '">▶ ウィンドウで遊ぶ</button>' +
+      '<div class="slide-actions"><button class="btn" data-open="game:' + esc(s.id) + '">▶ ウィンドウで遊ぶ</button>' +
       '<a class="btn" href="' + esc(s.url) + '" target="_blank" rel="noopener">新しいタブで開く ↗</a></div></div></div>';
   }
   return '<div class="slide" role="group" aria-roledescription="スライド" aria-label="' + esc(label) + '">' +
@@ -484,7 +484,7 @@ function slideHTML(s, i, n) {
     '<span class="sr-only">（サイトを新しいタブで開きます）</span></a>' +
     '<div class="slide-info"><p class="slide-kind">Web制作</p><h3>' + esc(s.title) + '</h3><p>' + esc(s.desc) + '</p>' +
     (s.role ? '<p class="role">担当：' + esc(s.role) + '</p>' : '') + tags +
-    '<div class="slide-actions"><a class="btn btn-main" href="' + esc(s.url) + '" target="_blank" rel="noopener">サイトを見る ↗</a>' +
+    '<div class="slide-actions"><a class="btn" href="' + esc(s.url) + '" target="_blank" rel="noopener">サイトを見る ↗</a>' +
     (s.repo ? '<a class="btn" href="' + esc(s.repo) + '" target="_blank" rel="noopener">GitHub ↗</a>' : '') + '</div></div></div>';
 }
 
@@ -582,7 +582,7 @@ function gameTitle(el, g) {
     '<div class="g-meta"><p class="g-ctrl">' + (g.control === 'keyboard' ? 'キーボードで遊ぶゲーム' : 'タッチ・マウスで遊ぶゲーム') + '</p>' +
     '<h3>' + esc(g.title) + '</h3><p>' + esc(g.desc) + '</p>' +
     (pcOnly ? '<p class="g-pc">このゲームはPCで遊べます</p>' : '') +
-    '<div class="row">' + (pcOnly ? '' : '<button class="btn btn-main g-start">プレイする</button>') +
+    '<div class="row">' + (pcOnly ? '' : '<button class="btn g-start">プレイする</button>') +
     '<a class="btn" href="' + esc(g.url) + '" target="_blank" rel="noopener">新しいタブで開く ↗</a></div></div></div>';
   const startBtn = $('.g-start', body);
   if (startBtn) {
@@ -715,7 +715,7 @@ function openAbout() {
       '<div class="about"><figure class="about-photo">' + imgTag(PROFILE.avatar, 'sm', 'ルオ ジアウェンの写真', false) + '</figure><div>' +
       '<h3 class="about-name">' + esc(PROFILE.name) + '</h3>' +
       PROFILE.bio.map(p => '<p>' + esc(p) + '</p>').join('') +
-      '<div class="row"><a class="btn btn-main" href="' + esc(asset(PROFILE.resume)) + '" target="_blank" rel="noopener">履歴書をダウンロード</a>' +
+      '<div class="row"><a class="btn" href="' + esc(asset(PROFILE.resume)) + '" target="_blank" rel="noopener">履歴書をダウンロード</a>' +
       '<a class="btn" href="' + esc(PROFILE.aboutMe) + '" target="_blank" rel="noopener">詳しく ↗</a></div></div></div>' +
       '<section class="exp out"><h3>経歴 / Experience</h3><ol class="timeline">' + EXPERIENCE.map(x =>
         '<li><p class="t-period">' + esc(x.period) + '</p><p class="t-title">' + esc(x.title) + '</p><p class="t-text">' + esc(x.text) + '</p></li>').join('') +
@@ -733,7 +733,7 @@ function openContact() {
       '<div><dt>件名:</dt><dd class="in">お仕事のご相談</dd></div></dl>' +
       '<div class="mail-body in"><p class="mail-lead">' + esc(PROFILE.contactLead) + '</p>' +
       '<p class="mail-thanks">' + esc(PROFILE.thanks) + '</p></div>' +
-      '<div class="row"><a class="btn btn-main" href="' + esc(href) + '">メールを書く</a>' +
+      '<div class="row"><a class="btn" href="' + esc(href) + '">メールを書く</a>' +
       '<button class="btn mail-copy">アドレスをコピー</button></div></div>',
   });
   const copy = $('.mail-copy', el);

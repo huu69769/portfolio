@@ -67,10 +67,7 @@ a { color: var(--select); }
 }
 .btn.pressed { background: #e6e3dc; }
 .btn:disabled { color: #8d8a83; cursor: default; }
-/* いちばん押してほしいボタン（Win98 の「既定のボタン」風に黒い外枠） */
-.btn-main { outline: 1px solid var(--ink); outline-offset: 0; font-weight: 700; }
 :focus-visible { outline: 1px dotted var(--ink); outline-offset: -5px; }
-.btn-main:focus-visible { outline: 1px dotted var(--ink); }
 .desktop > .icons :focus-visible { outline: 1px dotted #fff; outline-offset: 1px; }
 .row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
 
@@ -350,7 +347,7 @@ button.g-shot { cursor: pointer; }
   display: flex; align-items: center; gap: 4px;
   padding: 4px;
 }
-.start { flex: none; font-weight: 700; padding: 4px 10px; }
+.start { flex: none; padding: 4px 10px; }
 .start svg { width: 18px; height: 18px; }
 /* クイック起動（アイコンだけの小さなボタン） */
 .quick { display: flex; gap: 2px; flex: none; padding: 0 6px 0 6px; margin: 0 2px; box-shadow: inset 1px 0 var(--shade), inset 2px 0 var(--light), inset -2px 0 var(--shade), inset -1px 0 var(--light); }

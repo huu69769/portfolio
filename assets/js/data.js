@@ -51,13 +51,14 @@ const EXPERIENCE = [
    tags  : 使った技術
    -------------------------------------------------------------------------- */
 const WEB = [
-  { title: 'ポートフォリオサイト',
-    url: 'https://huu69769.github.io/portfolio/',
-    repo: 'https://github.com/huu69769/portfolio',
-    shot: 'shots/portfolio.webp',
-    desc: 'このサイト自体。レトロなパソコンのデスクトップをテーマに、アイコンを動かす・ウィンドウでひらく体験を設計し、ライブラリを使わずに実装しました。',
-    role: 'デザイン・コーディング すべて担当',
-    tags: ['HTML', 'CSS', 'JavaScript'] },
+  { title: 'シフト手帳',
+    // ?lang=ja を付けると、アプリが日本語で開きます
+    url: 'https://huu69769.github.io/APP/?lang=ja',
+    repo: 'https://github.com/huu69769/APP',
+    shot: 'shots/app.webp',
+    desc: 'アルバイトのシフト・予定・メモを記録するカレンダーアプリ。開くとすぐに、今月の勤務時間・給料・空き時間がわかります。',
+    role: 'デザイン・開発 すべて担当',
+    tags: ['React Native', 'Expo', 'TypeScript'] },
   { title: '作品タイトル2（準備中）',
     url: 'https://example.com/',
     repo: '',

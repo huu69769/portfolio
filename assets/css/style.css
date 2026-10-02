@@ -294,6 +294,10 @@ button.g-shot { cursor: pointer; }
 .g-tools { display: flex; flex-wrap: wrap; gap: 8px; }
 .sheet.maxed .g-stage { flex: 1; height: auto; min-height: 0; }
 
+/* ---------- Web制作のサイトを見るウィンドウ ---------- */
+.site-frame { padding: 2px; }
+.site-frame iframe { display: block; width: 100%; height: clamp(320px, calc(100vh - 230px), 760px); height: clamp(320px, calc(100dvh - 230px), 760px); border: 0; background: #fff; }
+
 /* ---------- アプリ（スマホの形のウィンドウ） ---------- */
 .app-layout { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start; }
 .phone {
@@ -455,6 +459,11 @@ button.g-shot { cursor: pointer; }
   .v-thumb { flex-basis: 66px; height: 48px; }
   .g-play .g-stage { flex: 1; height: auto; min-height: 320px; }
   .sheet-body:has(.g-play) { display: flex; flex-direction: column; padding: 8px; }
+  /* サイトもスマホの画面いっぱいに */
+  .site-win .sheet-body { display: flex; flex-direction: column; padding: 8px; }
+  .site-win .site-frame { flex: 1; display: flex; }
+  .site-win .site-frame iframe { flex: 1; height: auto; }
+  .site-win .addr > span:first-child, .site-win .site-repo { display: none; }
   /* アプリはスマホの画面いっぱいに */
   .app-win .sheet-body { display: flex; padding: 0; }
   .app-win .app-layout { flex: 1; display: flex; flex-wrap: nowrap; align-items: stretch; gap: 0; }

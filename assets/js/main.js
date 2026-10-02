@@ -59,11 +59,14 @@ const SVG = {
   pdf: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M6 2h14l6 6v22H6z" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M20 2v6h6" fill="#ddd" stroke="#333" stroke-width="1.4"/><rect x="4" y="17" width="20" height="9" fill="#c2413b"/><path d="M7 19h3v2H8v3H7zM8 19h2v2H8zM11 19h3v5h-3zM12 20h1v3h-1zM15 19h3v1h-2v1h2v1h-2v2h-1z" fill="#fff"/><path d="M12 20h1v3h-1z" fill="#c2413b"/></svg>',
   mail: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="3" y="8" width="26" height="17" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M3 8l13 10 13-10" fill="none" stroke="#333" stroke-width="1.4"/><circle cx="25" cy="9" r="4" fill="#b27aa6" stroke="#4b3263"/></svg>',
   img: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="3" y="5" width="26" height="22" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M5 25l8-9 6 6 4-4 4 7z" fill="#6f9c96"/><circle cx="22" cy="11" r="3" fill="#f4cf5f"/></svg>',
+  calendar: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="3" y="3" width="26" height="26" fill="#fff"/><path d="M7 11v18M11 11v18M15 11v18M19 11v18M23 11v18M3 16h26M3 21h26M3 26h26" stroke="#dfe3ec" stroke-width="1"/><rect x="3" y="3" width="26" height="8" fill="#E5484D"/><rect x="10" y="5" width="2" height="4" fill="#fff"/><rect x="20" y="5" width="2" height="4" fill="#fff"/><rect x="7" y="13" width="11" height="3" fill="#208AEF"/><rect x="14" y="18" width="12" height="3" fill="#30A46C"/><rect x="7" y="23" width="7" height="3" fill="#FFB224"/><rect x="3" y="3" width="26" height="26" fill="none" stroke="#333" stroke-width="1.4"/></svg>',
   phone: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="8" y="2" width="16" height="28" rx="2" fill="#3a3833" stroke="#222" stroke-width="1.2"/><rect x="10" y="5" width="12" height="20" fill="#fff"/><rect x="10" y="5" width="12" height="4" fill="#4b3263"/><path d="M11 11h2v2h-2zM15 11h2v2h-2zM19 11h2v2h-2zM11 15h2v2h-2zM15 15h2v2h-2zM19 15h2v2h-2zM11 19h2v2h-2zM15 19h2v2h-2z" fill="#6f9c96"/><rect x="19" y="19" width="2" height="2" fill="#b27aa6"/><rect x="14" y="26.5" width="4" height="1.6" fill="#8a867e"/></svg>',
   pc: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="4" y="4" width="24" height="17" fill="#d8d4cb" stroke="#333" stroke-width="1.4"/><rect x="7" y="7" width="18" height="11" fill="#6f9c96"/><rect x="10" y="23" width="12" height="3" fill="#d8d4cb" stroke="#333"/><rect x="6" y="26" width="20" height="3" fill="#d8d4cb" stroke="#333"/></svg>',
 };
 const ICON_OF = { web: 'web', uiux: 'folder', illust: 'folder', univ: 'folder', works: 'pc', about: 'txt', contact: 'mail', resume: 'pdf' };
-const iconFor = id => SVG[id.indexOf('game:') === 0 ? 'game' : id.indexOf('app:') === 0 ? 'phone' : ICON_OF[id] || 'folder'];
+const appIcon = a => SVG[(a && a.icon) in SVG ? a.icon : 'phone'];
+const iconFor = id => id.indexOf('app:') === 0 ? appIcon(APPS.find(a => 'app:' + a.id === id))
+  : SVG[id.indexOf('game:') === 0 ? 'game' : ICON_OF[id] || 'folder'];
 const KIND_ICON = { FOLDER: 'folder', BROWSER: 'web', GAME: 'game', APP: 'phone', VIEWER: 'img', TEXT: 'txt', MAIL: 'mail', WELCOME: 'pc' };
 
 /* ---------- 画像のまとまり（ビューアで順番に見る） ---------- */
@@ -82,7 +85,7 @@ const DESK_ITEMS = DESK.filter(d =>
   d.id === 'web' ? WEB.length : d.id.indexOf('app:') === 0 ? findApp(d.id) : d.id.indexOf('game:') === 0 ? findGame(d.id) : true);
 
 // カルーセルに並べるもの：Web制作 ＋ ゲーム（ゲームも見逃さないように）
-const SLIDES = WEB.map(w => Object.assign({ type: 'web' }, w))
+const SLIDES = WEB.map((w, i) => Object.assign({ type: 'web', index: i }, w))
   .concat(GAMES.map(g => Object.assign({ type: 'game' }, g)));
 
 /* ==========================================================================
@@ -265,7 +268,7 @@ function openSheet(id, o) {
   }
   const tid = 'sheet-t-' + (++uid);
   el = document.createElement('section');
-  const ico = SVG[KIND_ICON[o.kind] || 'folder'];
+  const ico = o.icon || SVG[KIND_ICON[o.kind] || 'folder'];
   el.className = 'sheet win out' + (o.cls ? ' ' + o.cls : '');
   el.dataset.id = id;
   el.setAttribute('role', 'dialog');
@@ -444,7 +447,7 @@ function card(attrs, media, title, sub, badge, badgeCls) {
     '<b>' + esc(title) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : '') + '</button>';
 }
 function catCards(id) {
-  if (id === 'web') return WEB.map((w, i) => card('data-open="web" data-index="' + i + '"', shotMedia(w.shot, w.title, 'web'), w.title, w.desc));
+  if (id === 'web') return WEB.map((w, i) => card('data-open="site:' + i + '"', shotMedia(w.shot, w.title, 'web'), w.title, w.desc));
   if (id === 'app') return APPS.map(a => card('data-open="app:' + esc(a.id) + '"', shotMedia(a.shot, a.title, 'web'), a.title, a.desc));
   if (id === 'game') return GAMES.map(g => card('data-open="game:' + esc(g.id) + '"', shotMedia(g.shot, g.title, 'game'), g.title, g.desc));
   if (id === 'uiux') return UIUX.map(p => card('data-view="' + p.id + '" data-i="0"', imgTag(p.items[0].src, 'sm', p.title), p.title, p.sub));
@@ -498,11 +501,12 @@ function slideHTML(s, i, n) {
       '<a class="btn" href="' + esc(s.url) + '" target="_blank" rel="noopener">新しいタブで開く ↗</a></div></div></div>';
   }
   return '<div class="slide" role="group" aria-roledescription="スライド" aria-label="' + esc(label) + '">' +
-    '<a class="shot" href="' + esc(s.url) + '" target="_blank" rel="noopener">' + shotMedia(s.shot, s.title, 'web') +
-    '<span class="sr-only">（サイトを新しいタブで開きます）</span></a>' +
+    '<button class="shot" data-open="site:' + s.index + '">' + shotMedia(s.shot, s.title, 'web') +
+    '<span class="sr-only">（ウィンドウで見る）</span></button>' +
     '<div class="slide-info"><p class="slide-kind">Web制作</p><h3>' + esc(s.title) + '</h3><p>' + esc(s.desc) + '</p>' +
     (s.role ? '<p class="role">担当：' + esc(s.role) + '</p>' : '') + tags +
-    '<div class="slide-actions"><a class="btn" href="' + esc(s.url) + '" target="_blank" rel="noopener">サイトを見る ↗</a>' +
+    '<div class="slide-actions"><button class="btn" data-open="site:' + s.index + '">ウィンドウで見る</button>' +
+    '<a class="btn" href="' + esc(s.url) + '" target="_blank" rel="noopener">新しいタブで開く ↗</a>' +
     (s.repo ? '<a class="btn" href="' + esc(s.repo) + '" target="_blank" rel="noopener">GitHub ↗</a>' : '') + '</div></div></div>';
 }
 
@@ -512,7 +516,7 @@ function openWeb(start) {
   const n = SLIDES.length;
   openSheet('web', {
     title: 'Web制作 - ブラウザ', kind: 'BROWSER', w: 700, inset: false,
-    status: '画像を選ぶと、サイトが新しいタブで開きます',
+    status: '画像を選ぶと、サイトをウィンドウの中で見られます',
     body:
       '<div class="addr"><span aria-hidden="true">アドレス</span>' +
       '<span class="addr-field in" aria-label="表示中のサイトのアドレス"></span>' +
@@ -583,6 +587,24 @@ function initCarousel(el, start) {
 }
 
 /* ==========================================================================
+   中身：Web制作のサイトを、ブラウザ風のウィンドウの中で見る
+   ========================================================================== */
+function openSite(i) {
+  const w = WEB[i];
+  if (!w) return;
+  openSheet('site:' + i, {
+    title: w.title + ' - ブラウザ', kind: 'BROWSER', w: 1040, inset: false, cls: 'site-win',
+    status: '表示されないときは「新しいタブで開く」を押してください',
+    body:
+      '<div class="addr"><span aria-hidden="true">アドレス</span>' +
+      '<span class="addr-field in">' + esc(absUrl(w.url)) + '</span>' +
+      '<a class="btn" href="' + esc(w.url) + '" target="_blank" rel="noopener">新しいタブで開く ↗</a>' +
+      (w.repo ? '<a class="btn site-repo" href="' + esc(w.repo) + '" target="_blank" rel="noopener">GitHub ↗</a>' : '') + '</div>' +
+      '<div class="site-frame in"><iframe src="' + esc(w.url) + '" title="' + esc(w.title) + '（サイト）"></iframe></div>',
+  });
+}
+
+/* ==========================================================================
    中身：アプリ（スマホの形のウィンドウの中で、実際に操作できる）
    ========================================================================== */
 function openApp(id) {
@@ -590,7 +612,7 @@ function openApp(id) {
   if (!a) return;
   const tags = (a.tags || []).length ? techList(a.tags) : '';
   openSheet('app:' + id, {
-    title: a.title, kind: 'APP', w: 720, inset: false, cls: 'app-win',
+    title: a.title, kind: 'APP', icon: appIcon(a), w: 720, inset: false, cls: 'app-win',
     status: 'スマホ版の画面です。そのまま操作できます（見本のデータが入っています）',
     body:
       '<div class="app-layout"><div class="phone"><iframe src="' + esc(a.url) + '" title="' + esc(a.title) + '（アプリ）"></iframe></div>' +
@@ -798,6 +820,7 @@ function open(id, d) {
   if (id === 'welcome') return openWelcome();
   if (id === 'works') return openWorks(d.cat);
   if (id === 'web') return openWeb(d.index !== undefined ? +d.index : null);
+  if (id.indexOf('site:') === 0) return openSite(+id.slice(5));
   if (id.indexOf('game:') === 0) return openGame(id.slice(5));
   if (id.indexOf('app:') === 0) return openApp(id.slice(4));
   if (id === 'uiux' || id === 'univ' || id === 'illust') return openFolder(id);

@@ -433,6 +433,11 @@ document.addEventListener('keydown', e => {
 /* ==========================================================================
    中身：作品カード
    ========================================================================== */
+// 使用技術（「使用技術：」の見出し＋タグ）
+function techList(tags) {
+  return '<div class="tech"><span class="tech-label" id="tech-' + (++uid) + '">使用技術：</span>' +
+    '<ul class="tags" aria-labelledby="tech-' + uid + '">' + tags.map(t => '<li>' + esc(t) + '</li>').join('') + '</ul></div>';
+}
 function card(attrs, media, title, sub, badge, badgeCls) {
   return '<button class="card" ' + attrs + '><span class="ph">' +
     (badge ? '<span class="badge ' + (badgeCls || '') + '">' + badge + '</span>' : '') + media + '</span>' +
@@ -482,7 +487,7 @@ function openFolder(id) {
    中身：Web制作（ブラウザ風・自動で切り替わるカルーセル）
    ========================================================================== */
 function slideHTML(s, i, n) {
-  const tags = (s.tags || []).length ? '<ul class="tags" aria-label="使用技術">' + s.tags.map(t => '<li>' + esc(t) + '</li>').join('') + '</ul>' : '';
+  const tags = (s.tags || []).length ? techList(s.tags) : '';
   const label = (i + 1) + ' / ' + n + '：' + s.title;
   if (s.type === 'game') {
     return '<div class="slide" role="group" aria-roledescription="スライド" aria-label="' + esc(label) + '">' +
@@ -583,7 +588,7 @@ function initCarousel(el, start) {
 function openApp(id) {
   const a = APPS.find(x => x.id === id);
   if (!a) return;
-  const tags = (a.tags || []).length ? '<ul class="tags" aria-label="使用技術">' + a.tags.map(t => '<li>' + esc(t) + '</li>').join('') + '</ul>' : '';
+  const tags = (a.tags || []).length ? techList(a.tags) : '';
   openSheet('app:' + id, {
     title: a.title, kind: 'APP', w: 720, inset: false, cls: 'app-win',
     status: 'スマホ版の画面です。そのまま操作できます（見本のデータが入っています）',

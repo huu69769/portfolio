@@ -715,8 +715,7 @@ function openAbout() {
       '<div class="about"><figure class="about-photo">' + imgTag(PROFILE.avatar, 'sm', 'ルオ ジアウェンの写真', false) + '</figure><div>' +
       '<h3 class="about-name">' + esc(PROFILE.name) + '</h3>' +
       PROFILE.bio.map(p => '<p>' + esc(p) + '</p>').join('') +
-      '<div class="row"><a class="btn" href="' + esc(asset(PROFILE.resume)) + '" target="_blank" rel="noopener">履歴書をダウンロード</a>' +
-      '<a class="btn" href="' + esc(PROFILE.aboutMe) + '" target="_blank" rel="noopener">詳しく ↗</a></div></div></div>' +
+      '<div class="row"><a class="btn" href="' + esc(asset(PROFILE.resume)) + '" target="_blank" rel="noopener">履歴書をダウンロード</a></div></div></div>' +
       '<section class="exp out"><h3>経歴 / Experience</h3><ol class="timeline">' + EXPERIENCE.map(x =>
         '<li><p class="t-period">' + esc(x.period) + '</p><p class="t-title">' + esc(x.title) + '</p><p class="t-text">' + esc(x.text) + '</p></li>').join('') +
       '</ol></section>',

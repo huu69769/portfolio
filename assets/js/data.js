@@ -24,7 +24,6 @@ const PROFILE = {
     '日常の中で、同じ内容でも伝え方によって受け取り方が変わることに興味を持ち、「どうすればより伝わるのか」を考える中で、デザインにも関心を持つようになりました。',
   ],
   resume: 'rirekisho.pdf',                                // BASE の中のファイル名
-  aboutMe: 'https://huu69769.github.io/about-me/',
   email: 'l2004j10w29@gmail.com',
   contactLead: 'お仕事のご相談・ポートフォリオの詳細など、お気軽にご連絡ください。',
   thanks: '最後まで見てくださって、ありがとうございました！',

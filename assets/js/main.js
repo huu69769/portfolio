@@ -59,11 +59,12 @@ const SVG = {
   pdf: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><path d="M6 2h14l6 6v22H6z" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M20 2v6h6" fill="#ddd" stroke="#333" stroke-width="1.4"/><rect x="4" y="17" width="20" height="9" fill="#c2413b"/><path d="M7 19h3v2H8v3H7zM8 19h2v2H8zM11 19h3v5h-3zM12 20h1v3h-1zM15 19h3v1h-2v1h2v1h-2v2h-1z" fill="#fff"/><path d="M12 20h1v3h-1z" fill="#c2413b"/></svg>',
   mail: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="3" y="8" width="26" height="17" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M3 8l13 10 13-10" fill="none" stroke="#333" stroke-width="1.4"/><circle cx="25" cy="9" r="4" fill="#b27aa6" stroke="#4b3263"/></svg>',
   img: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="3" y="5" width="26" height="22" fill="#fff" stroke="#333" stroke-width="1.4"/><path d="M5 25l8-9 6 6 4-4 4 7z" fill="#6f9c96"/><circle cx="22" cy="11" r="3" fill="#f4cf5f"/></svg>',
+  phone: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="8" y="2" width="16" height="28" rx="2" fill="#3a3833" stroke="#222" stroke-width="1.2"/><rect x="10" y="5" width="12" height="20" fill="#fff"/><rect x="10" y="5" width="12" height="4" fill="#4b3263"/><path d="M11 11h2v2h-2zM15 11h2v2h-2zM19 11h2v2h-2zM11 15h2v2h-2zM15 15h2v2h-2zM19 15h2v2h-2zM11 19h2v2h-2zM15 19h2v2h-2z" fill="#6f9c96"/><rect x="19" y="19" width="2" height="2" fill="#b27aa6"/><rect x="14" y="26.5" width="4" height="1.6" fill="#8a867e"/></svg>',
   pc: '<svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="4" y="4" width="24" height="17" fill="#d8d4cb" stroke="#333" stroke-width="1.4"/><rect x="7" y="7" width="18" height="11" fill="#6f9c96"/><rect x="10" y="23" width="12" height="3" fill="#d8d4cb" stroke="#333"/><rect x="6" y="26" width="20" height="3" fill="#d8d4cb" stroke="#333"/></svg>',
 };
 const ICON_OF = { web: 'web', uiux: 'folder', illust: 'folder', univ: 'folder', works: 'pc', about: 'txt', contact: 'mail', resume: 'pdf' };
-const iconFor = id => SVG[id.indexOf('game:') === 0 ? 'game' : ICON_OF[id] || 'folder'];
-const KIND_ICON = { FOLDER: 'folder', BROWSER: 'web', GAME: 'game', VIEWER: 'img', TEXT: 'txt', MAIL: 'mail', WELCOME: 'pc' };
+const iconFor = id => SVG[id.indexOf('game:') === 0 ? 'game' : id.indexOf('app:') === 0 ? 'phone' : ICON_OF[id] || 'folder'];
+const KIND_ICON = { FOLDER: 'folder', BROWSER: 'web', GAME: 'game', APP: 'phone', VIEWER: 'img', TEXT: 'txt', MAIL: 'mail', WELCOME: 'pc' };
 
 /* ---------- 画像のまとまり（ビューアで順番に見る） ---------- */
 const SETS = {};
@@ -72,7 +73,13 @@ SETS.univ = { title: '大学時代のデザイン', items: UNIV };
 SETS.illust = { title: 'イラスト', items: ILLUST };
 const catLabel = id => (CATEGORIES.find(c => c.id === id) || {}).label || id;
 // 中身がまだ無い分類（ゲームなど）は出さない
-const CATS = CATEGORIES.filter(c => c.id !== 'game' || GAMES.length);
+const HAS = { app: APPS.length, web: WEB.length, game: GAMES.length };
+const CATS = CATEGORIES.filter(c => !(c.id in HAS) || HAS[c.id]);
+// デスクトップに置くもの（中身が無いアイコンは出さない）
+const findApp = id => APPS.find(a => 'app:' + a.id === id);
+const findGame = id => GAMES.find(g => 'game:' + g.id === id);
+const DESK_ITEMS = DESK.filter(d =>
+  d.id === 'web' ? WEB.length : d.id.indexOf('app:') === 0 ? findApp(d.id) : d.id.indexOf('game:') === 0 ? findGame(d.id) : true);
 
 // カルーセルに並べるもの：Web制作 ＋ ゲーム（ゲームも見逃さないように）
 const SLIDES = WEB.map(w => Object.assign({ type: 'web' }, w))
@@ -82,8 +89,12 @@ const SLIDES = WEB.map(w => Object.assign({ type: 'web' }, w))
    起動画面
    ========================================================================== */
 const boot = $('#boot');
-const BOOT_LINES = ['LUO JIAWEN portfolio OS  ver.2026', '', 'UI/UX を読み込み中 ........ OK',
-  'イラスト を読み込み中 ...... OK', 'Web制作 を読み込み中 ....... OK'].concat(GAMES.length ? ['Web ゲーム を読み込み中 .... OK'] : [], ['', 'ようこそ。']);
+const BOOT_LINES = ['LUO JIAWEN portfolio OS  ver.2026', ''].concat(
+  APPS.length ? ['アプリ を読み込み中 ........ OK'] : [],
+  ['UI/UX を読み込み中 ........ OK', 'イラスト を読み込み中 ...... OK'],
+  WEB.length ? ['Web制作 を読み込み中 ....... OK'] : [],
+  GAMES.length ? ['Web ゲーム を読み込み中 .... OK'] : [],
+  ['', 'ようこそ。']);
 let bootTimer = null, booted = false;
 function endBoot() {
   if (booted) return;
@@ -120,9 +131,9 @@ const savedPos = store.get(POS_KEY) || {};
 const rand = (a, b) => a + Math.random() * (b - a);
 const clamp01 = v => Math.min(1, Math.max(0, v));
 
-function countWorks() { return WEB.length + GAMES.length + UIUX.length + UNIV.length + ILLUST.length; }
+function countWorks() { return APPS.length + WEB.length + GAMES.length + UIUX.length + UNIV.length + ILLUST.length; }
 
-const entries = DESK.map((d, i) => {
+const entries = DESK_ITEMS.map((d, i) => {
   const isLink = d.id === 'resume';
   const el = document.createElement(isLink ? 'a' : 'button');
   el.className = 'entry icon';
@@ -142,6 +153,7 @@ const entries = DESK.map((d, i) => {
   el.innerHTML = '<span class="ico" aria-hidden="true">' + iconFor(d.id) + '</span>' + preview +
     '<span class="lbl">' + esc(d.label) + extra + '</span>';
   if (g) el.setAttribute('aria-label', 'Web ゲーム：' + g.title);
+  if (findApp(d.id)) el.setAttribute('aria-label', 'アプリ：' + d.label.replace(/\s+/g, ' '));
   // 決めた位置 ＋ ほんの少しだけずらす（設計されたランダム）
   el._home = { x: clamp01(d.x + rand(-0.015, 0.015)), y: clamp01(d.y + rand(-0.015, 0.015)) };
   el._pos = savedPos[d.id] || el._home;
@@ -428,6 +440,7 @@ function card(attrs, media, title, sub, badge, badgeCls) {
 }
 function catCards(id) {
   if (id === 'web') return WEB.map((w, i) => card('data-open="web" data-index="' + i + '"', shotMedia(w.shot, w.title, 'web'), w.title, w.desc));
+  if (id === 'app') return APPS.map(a => card('data-open="app:' + esc(a.id) + '"', shotMedia(a.shot, a.title, 'web'), a.title, a.desc));
   if (id === 'game') return GAMES.map(g => card('data-open="game:' + esc(g.id) + '"', shotMedia(g.shot, g.title, 'game'), g.title, g.desc));
   if (id === 'uiux') return UIUX.map(p => card('data-view="' + p.id + '" data-i="0"', imgTag(p.items[0].src, 'sm', p.title), p.title, p.sub));
   const set = id === 'univ' ? UNIV : ILLUST;
@@ -562,6 +575,34 @@ function initCarousel(el, start) {
   el._cleanup = () => { stop(); document.removeEventListener('visibilitychange', onVis); };
   show(start);
   play();
+}
+
+/* ==========================================================================
+   中身：アプリ（スマホの形のウィンドウの中で、実際に操作できる）
+   ========================================================================== */
+function openApp(id) {
+  const a = APPS.find(x => x.id === id);
+  if (!a) return;
+  const tags = (a.tags || []).length ? '<ul class="tags" aria-label="使用技術">' + a.tags.map(t => '<li>' + esc(t) + '</li>').join('') + '</ul>' : '';
+  openSheet('app:' + id, {
+    title: a.title, kind: 'APP', w: 720, inset: false, cls: 'app-win',
+    status: 'スマホ版の画面です。そのまま操作できます（見本のデータが入っています）',
+    body:
+      '<div class="app-layout"><div class="phone"><iframe src="' + esc(a.url) + '" title="' + esc(a.title) + '（アプリ）"></iframe></div>' +
+      '<div class="app-info"><p class="slide-kind">アプリ開発</p><h3>' + esc(a.title) + '</h3><p>' + esc(a.desc) + '</p>' +
+      (a.role ? '<p class="role">担当：' + esc(a.role) + '</p>' : '') + tags +
+      '<div class="row"><a class="btn" href="' + esc(a.url) + '" target="_blank" rel="noopener">新しいタブで開く ↗</a>' +
+      (a.repo ? '<a class="btn" href="' + esc(a.repo) + '" target="_blank" rel="noopener">GitHub ↗</a>' : '') + '</div></div></div>',
+    init: el => {
+      const frame = $('iframe', el);
+      // アプリの中で Esc を押したら、アプリから抜けてページの操作にもどる（同じサイト内のみ）
+      frame.addEventListener('load', () => {
+        try {
+          frame.contentWindow.addEventListener('keydown', ev => { if (ev.key === 'Escape') $('[data-act="close"]', el).focus(); });
+        } catch (e) { /* 別ドメインのアプリ */ }
+      });
+    },
+  });
 }
 
 /* ==========================================================================
@@ -753,6 +794,7 @@ function open(id, d) {
   if (id === 'works') return openWorks(d.cat);
   if (id === 'web') return openWeb(d.index !== undefined ? +d.index : null);
   if (id.indexOf('game:') === 0) return openGame(id.slice(5));
+  if (id.indexOf('app:') === 0) return openApp(id.slice(4));
   if (id === 'uiux' || id === 'univ' || id === 'illust') return openFolder(id);
   if (id === 'about') return openAbout();
   if (id === 'contact') return openContact();
@@ -783,7 +825,7 @@ const startMenu = $('#startMenu');
 startBtn.innerHTML = SVG.pc + '<span>スタート</span>';
 $$('[data-ico]').forEach(s => { s.innerHTML = SVG[s.dataset.ico]; });
 $('#smList').innerHTML =
-  DESK.map(d => d.id === 'resume'
+  DESK_ITEMS.map(d => d.id === 'resume'
     ? '<a role="menuitem" href="' + esc(asset(PROFILE.resume)) + '" target="_blank" rel="noopener">' + SVG.pdf + '<span>履歴書をダウンロード</span></a>'
     : '<button role="menuitem" data-open="' + esc(d.id) + '">' + iconFor(d.id) + '<span>' + esc(d.label) + '</span></button>').join('') +
   '<div class="sm-sep" role="separator"></div>' +

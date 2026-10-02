@@ -292,6 +292,22 @@ button.g-shot { cursor: pointer; }
 .g-tools { display: flex; flex-wrap: wrap; gap: 8px; }
 .sheet.maxed .g-stage { flex: 1; height: auto; min-height: 0; }
 
+/* ---------- アプリ（スマホの形のウィンドウ） ---------- */
+.app-layout { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-start; }
+.phone {
+  flex: none; padding: 12px 8px 14px;
+  background: var(--dark); border-radius: 28px;
+  box-shadow: inset 0 0 0 2px #55524c, 3px 4px 0 rgba(0, 0, 0, .25);
+}
+.phone iframe {
+  display: block; width: 375px; height: clamp(420px, calc(100vh - 200px), 720px); height: clamp(420px, calc(100dvh - 200px), 720px);
+  border: 0; border-radius: 16px; background: #fff;
+}
+.app-info { flex: 1; min-width: 220px; padding-top: 4px; }
+.app-info h3 { margin: 0 0 6px; font-family: var(--pixel); font-weight: 400; font-size: 22px; }
+.app-info p { margin: 0 0 8px; font-size: 13.5px; line-height: 1.8; }
+.app-info .role { font-size: 12.5px; color: var(--muted); }
+
 /* ---------- 画像ビューア ---------- */
 .viewer { display: flex; flex-direction: column; gap: 10px; }
 .v-stage {
@@ -437,6 +453,12 @@ button.g-shot { cursor: pointer; }
   .v-thumb { flex-basis: 66px; height: 48px; }
   .g-play .g-stage { flex: 1; height: auto; min-height: 320px; }
   .sheet-body:has(.g-play) { display: flex; flex-direction: column; padding: 8px; }
+  /* アプリはスマホの画面いっぱいに */
+  .app-win .sheet-body { display: flex; padding: 0; }
+  .app-win .app-layout { flex: 1; display: flex; flex-wrap: nowrap; align-items: stretch; gap: 0; }
+  .app-win .phone { flex: 1; display: flex; padding: 0; border-radius: 0; background: #fff; box-shadow: none; }
+  .app-win .phone iframe { flex: 1; width: 100%; height: auto; border-radius: 0; }
+  .app-win .app-info, .app-win .sheet-foot { display: none; }
 
   /* 下のバーは「もどる・ホーム・作品・私について・お問い合わせ」 */
   .taskbar { gap: 3px; padding: 4px 4px calc(4px + env(safe-area-inset-bottom)); }

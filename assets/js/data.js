@@ -49,7 +49,7 @@ const EXPERIENCE = [
    repo  : GitHub のURL（無ければ ''）
    shot  : 「すべての作品」に出すサムネイル。BASE からのパス
    desc  : 一言説明
-   role  : 担当範囲
+   role  : 担当範囲（AIでコードを書いた場合は、そのことも書く）
    tags  : 使った技術
    ※ デスクトップに置くには、DESK に { id: 'app:id', … } を1行足してください
    -------------------------------------------------------------------------- */
@@ -61,8 +61,8 @@ const APPS = [
     repo: 'https://github.com/huu69769/APP',
     shot: 'shots/app.webp',
     desc: 'アルバイトのシフト・予定・メモを記録するカレンダーアプリ。開くとすぐに、今月の勤務時間・給料・空き時間がわかります。',
-    role: 'デザイン・開発 すべて担当',
-    tags: ['TypeScript', 'React Native', 'Expo'] },   // 言語 → フレームワーク → ツール の順
+    role: '企画・デザイン・AIへの指示出し（コードは生成AI「Claude Code」で作成したバイブコーディング）',
+    tags: ['TypeScript', 'React Native', 'Expo', 'Claude Code'] },   // 言語 → フレームワーク → ツール の順
 ];
 
 /* --------------------------------------------------------------------------
@@ -72,7 +72,7 @@ const APPS = [
    repo  : GitHub のURL（無ければ '' のままでOK。ボタンが出なくなります）
    shot  : スクリーンショット（16:9）。BASE からのパス。'' なら仮の画像が出ます
    desc  : 一言説明（誰のために、何を解決したか）
-   role  : 担当範囲
+   role  : 担当範囲（AIでコードを書いた場合は、そのことも書く）
    tags  : 使った技術
    embed : false にすると、ウィンドウの中ではなく新しいタブで開きます
            （ほかのサイトに埋め込めないサイト・特別な設定が必要なサイト用）
@@ -84,15 +84,15 @@ const WEB = [
     repo: 'https://github.com/huu69769/kitte',
     shot: 'shots/kitte.webp',
     desc: '写真から自分だけの切手をつくるWebアプリ。好きな写真を切り取ってプレス機で「押印」し、デスクで文字や消印を加えて、アルバムに集められます。',
-    role: 'デザイン・開発 すべて担当',
-    tags: ['JavaScript', 'React', 'Vite'] },   // 言語 → フレームワーク → ツール
+    role: '企画・デザイン・AIへの指示出し（コードは生成AI「Claude Code」で作成したバイブコーディング）',
+    tags: ['JavaScript', 'React', 'Vite', 'Claude Code'] },   // 言語 → フレームワーク → ツール
   { title: 'PHONK MEME MACHINE',
     url: 'https://cheerful-choux-51d78b.netlify.app/',
     repo: 'https://github.com/huu69769/Brainrot',
     shot: 'shots/phonk.webp',
     desc: 'スマホの動画を、ワンタップで「phonk ミーム動画」に変換するWebツール。動画はブラウザの中だけで処理し、サーバーには一切アップロードしません。',
-    role: 'デザイン・開発 すべて担当',
-    tags: ['JavaScript', 'Vite', 'FFmpeg.wasm'],
+    role: '企画・デザイン・AIへの指示出し（コードは生成AI「Claude Code」で作成したバイブコーディング）',
+    tags: ['JavaScript', 'Vite', 'FFmpeg.wasm', 'Claude Code'],
     embed: false },   // 動画処理に特別な設定が必要なため、新しいタブで開く
 ];
 

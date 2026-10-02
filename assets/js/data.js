@@ -74,17 +74,26 @@ const APPS = [
    desc  : 一言説明（誰のために、何を解決したか）
    role  : 担当範囲
    tags  : 使った技術
-   ※ いまは空っぽです。空のあいだは「Web制作」のアイコンと分類も自動で隠れます。
-   サイトができたら、下のお手本の // を消して書き換えてください。
+   embed : false にすると、ウィンドウの中ではなく新しいタブで開きます
+           （ほかのサイトに埋め込めないサイト・特別な設定が必要なサイト用）
+   ※ 空にすると「Web制作」のアイコンと分類は自動で隠れます。
    -------------------------------------------------------------------------- */
 const WEB = [
-  // { title: 'サイトの名前',
-  //   url: 'https://huu69769.github.io/xxx/',
-  //   repo: 'https://github.com/huu69769/xxx',
-  //   shot: 'shots/xxx.webp',
-  //   desc: 'どんなサイトか一言で。誰のために、何を工夫したか。',
-  //   role: 'デザイン・コーディング すべて担当',
-  //   tags: ['HTML', 'CSS', 'JavaScript'] },
+  { title: '切手工房',
+    url: 'https://huu69769.github.io/kitte/',   // 日本語で開きます（?lang=zh で中国語）
+    repo: 'https://github.com/huu69769/kitte',
+    shot: 'shots/kitte.webp',
+    desc: '写真から自分だけの切手をつくるWebアプリ。好きな写真を切り取ってプレス機で「押印」し、デスクで文字や消印を加えて、アルバムに集められます。',
+    role: 'デザイン・開発 すべて担当',
+    tags: ['JavaScript', 'React', 'Vite'] },   // 言語 → フレームワーク → ツール
+  { title: 'PHONK MEME MACHINE',
+    url: 'https://cheerful-choux-51d78b.netlify.app/',
+    repo: 'https://github.com/huu69769/Brainrot',
+    shot: 'shots/phonk.webp',
+    desc: 'スマホの動画を、ワンタップで「phonk ミーム動画」に変換するWebツール。動画はブラウザの中だけで処理し、サーバーには一切アップロードしません。',
+    role: 'デザイン・開発 すべて担当',
+    tags: ['JavaScript', 'Vite', 'FFmpeg.wasm'],
+    embed: false },   // 動画処理に特別な設定が必要なため、新しいタブで開く
 ];
 
 /* --------------------------------------------------------------------------

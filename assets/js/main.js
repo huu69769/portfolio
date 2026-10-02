@@ -441,13 +441,18 @@ function techList(tags) {
   return '<div class="tech"><span class="tech-label" id="tech-' + (++uid) + '">使用技術：</span>' +
     '<ul class="tags" aria-labelledby="tech-' + uid + '">' + tags.map(t => '<li>' + esc(t) + '</li>').join('') + '</ul></div>';
 }
-function card(attrs, media, title, sub, badge, badgeCls) {
-  return '<button class="card" ' + attrs + '><span class="ph">' +
+function card(attrs, media, title, sub, badge, badgeCls, tag) {
+  tag = tag || 'button';
+  return '<' + tag + ' class="card" ' + attrs + '><span class="ph">' +
     (badge ? '<span class="badge ' + (badgeCls || '') + '">' + badge + '</span>' : '') + media + '</span>' +
-    '<b>' + esc(title) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : '') + '</button>';
+    '<b>' + esc(title) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : '') + '</' + tag + '>';
 }
+// ウィンドウの中に埋め込めないサイト（embed: false）は新しいタブで開く
+const newTab = url => 'href="' + esc(url) + '" target="_blank" rel="noopener"';
 function catCards(id) {
-  if (id === 'web') return WEB.map((w, i) => card('data-open="site:' + i + '"', shotMedia(w.shot, w.title, 'web'), w.title, w.desc));
+  if (id === 'web') return WEB.map((w, i) => w.embed === false
+    ? card(newTab(w.url), shotMedia(w.shot, w.title, 'web'), w.title, w.desc + '（新しいタブで開きます）', '', '', 'a')
+    : card('data-open="site:' + i + '"', shotMedia(w.shot, w.title, 'web'), w.title, w.desc));
   if (id === 'app') return APPS.map(a => card('data-open="app:' + esc(a.id) + '"', shotMedia(a.shot, a.title, 'web'), a.title, a.desc));
   if (id === 'game') return GAMES.map(g => card('data-open="game:' + esc(g.id) + '"', shotMedia(g.shot, g.title, 'game'), g.title, g.desc));
   if (id === 'uiux') return UIUX.map(p => card('data-view="' + p.id + '" data-i="0"', imgTag(p.items[0].src, 'sm', p.title), p.title, p.sub));
@@ -500,13 +505,15 @@ function slideHTML(s, i, n) {
       '<div class="slide-actions"><button class="btn" data-open="game:' + esc(s.id) + '">▶ ウィンドウで遊ぶ</button>' +
       '<a class="btn" href="' + esc(s.url) + '" target="_blank" rel="noopener">新しいタブで開く ↗</a></div></div></div>';
   }
+  const inWin = s.embed !== false;
   return '<div class="slide" role="group" aria-roledescription="スライド" aria-label="' + esc(label) + '">' +
-    '<button class="shot" data-open="site:' + s.index + '">' + shotMedia(s.shot, s.title, 'web') +
-    '<span class="sr-only">（ウィンドウで見る）</span></button>' +
+    (inWin
+      ? '<button class="shot" data-open="site:' + s.index + '">' + shotMedia(s.shot, s.title, 'web') + '<span class="sr-only">（ウィンドウで見る）</span></button>'
+      : '<a class="shot" ' + newTab(s.url) + '>' + shotMedia(s.shot, s.title, 'web') + '<span class="sr-only">（新しいタブで開きます）</span></a>') +
     '<div class="slide-info"><p class="slide-kind">Web制作</p><h3>' + esc(s.title) + '</h3><p>' + esc(s.desc) + '</p>' +
     (s.role ? '<p class="role">担当：' + esc(s.role) + '</p>' : '') + tags +
-    '<div class="slide-actions"><button class="btn" data-open="site:' + s.index + '">ウィンドウで見る</button>' +
-    '<a class="btn" href="' + esc(s.url) + '" target="_blank" rel="noopener">新しいタブで開く ↗</a>' +
+    '<div class="slide-actions">' + (inWin ? '<button class="btn" data-open="site:' + s.index + '">ウィンドウで見る</button>' : '') +
+    '<a class="btn" ' + newTab(s.url) + '>' + (inWin ? '新しいタブで開く ↗' : 'サイトを見る ↗') + '</a>' +
     (s.repo ? '<a class="btn" href="' + esc(s.repo) + '" target="_blank" rel="noopener">GitHub ↗</a>' : '') + '</div></div></div>';
 }
 
@@ -516,7 +523,7 @@ function openWeb(start) {
   const n = SLIDES.length;
   openSheet('web', {
     title: 'Web制作 - ブラウザ', kind: 'BROWSER', w: 700, inset: false,
-    status: '画像を選ぶと、サイトをウィンドウの中で見られます',
+    status: '画像を選ぶと、サイトが開きます',
     body:
       '<div class="addr"><span aria-hidden="true">アドレス</span>' +
       '<span class="addr-field in" aria-label="表示中のサイトのアドレス"></span>' +

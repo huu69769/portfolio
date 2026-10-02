@@ -86,6 +86,13 @@ const WEB = [
     desc: '写真から自分だけの切手をつくるWebアプリ。好きな写真を切り取ってプレス機で「押印」し、デスクで文字や消印を加えて、アルバムに集められます。',
     role: '企画・デザイン・AIへの指示出し（コードは生成AI「Claude Code」で作成したバイブコーディング）',
     tags: ['JavaScript', 'React', 'Vite', 'Claude Code'] },   // 言語 → フレームワーク → ツール
+  { title: '就活管理ツール',
+    url: 'https://huu69769.github.io/shukatsu/',
+    repo: 'https://github.com/huu69769/shukatsu',
+    shot: 'shots/shukatsu.webp',
+    desc: '日本での就活のための管理ツール。応募の進捗をステージごとに整理し、面接の予定や会社ごとのメモ、「就活の軸」をまとめて管理できます。データはブラウザの中だけに保存します。',
+    role: '企画・デザイン・AIへの指示出し（コードは生成AI「Claude Code」で作成したバイブコーディング）',
+    tags: ['HTML', 'CSS', 'JavaScript', 'Claude Code'] },
   { title: 'PHONK MEME MACHINE',
     url: 'https://cheerful-choux-51d78b.netlify.app/',
     repo: 'https://github.com/huu69769/Brainrot',

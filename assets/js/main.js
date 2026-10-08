@@ -418,7 +418,41 @@ function keepSheetsInView() {
 
 /* ---------- スマホの「もどる・ホーム」 ---------- */
 const mBack = $('#mBack');
-function updateNav() { mBack.disabled = !topSheet(); }
+function updateNav() { mBack.disabled = !topSheet(); syncHistory(); }
+
+/* ---------- ブラウザ・スマホの「戻る」で、サイトから出ずにウィンドウを閉じる ----------
+   ウィンドウが開いている間だけ、履歴に「しおり」を1つ置いておく。
+   戻るを押すと、しおりが外れる → 一番手前のウィンドウを閉じる（まだ開いていれば、しおりを置き直す）。 */
+let historyGuard = false, skipPop = false;
+// 戻るで閉じる対象（ようこそ画面は除く）
+function backTarget() {
+  let best = null;
+  sheets.forEach(s => {
+    if (s.hidden || s.dataset.id === 'welcome') return;
+    if (!best || +s.style.zIndex > +best.style.zIndex) best = s;
+  });
+  return best;
+}
+function syncHistory() {
+  const need = !!backTarget();
+  if (need && !historyGuard) {
+    try { history.pushState({ luoWindow: true }, ''); historyGuard = true; } catch (e) { /* 使えない環境 */ }
+  } else if (!need && historyGuard) {
+    // ボタンなどで全部閉じたときは、置いたしおりを片付ける
+    historyGuard = false; skipPop = true;
+    history.back();
+  }
+}
+addEventListener('popstate', () => {
+  if (skipPop) {
+    // 片付けの「戻る」。その間に別のウィンドウが開いていたら、しおりを置き直す
+    skipPop = false; historyGuard = false; syncHistory();
+    return;
+  }
+  historyGuard = false;
+  const t = backTarget();
+  if (t) closeSheet(t.dataset.id);   // closeSheet → updateNav → まだ開いていれば、しおりを置き直す
+});
 mBack.addEventListener('click', () => { const t = topSheet(); if (t) closeSheet(t.dataset.id); });
 $('#mHome').addEventListener('click', () => {
   Array.from(sheets.keys()).forEach(id => { if (id !== 'welcome') closeSheet(id); });
@@ -430,6 +464,7 @@ document.addEventListener('keydown', e => {
   if (e.key !== 'Escape' || document.fullscreenElement) return;
   if (!startMenu.hidden) { toggleStart(false); startBtn.focus(); return; }
   const t = topSheet();
+  if (t && t._onEsc && t._onEsc()) { e.preventDefault(); return; }   // 拡大中のビューアは、まず縮小
   if (t) { e.preventDefault(); closeSheet(t.dataset.id); }
 });
 
@@ -727,17 +762,19 @@ function openViewer(setId, i) {
   if (!el || el._set !== setId) {
     const body = '<div class="viewer"><div class="v-stage in"><img class="v-img" alt=""></div>' +
       '<div class="v-bar"><button class="btn v-prev">‹ 前へ</button>' +
-      '<p class="v-cap"><span class="v-text"></span><span class="v-count"></span></p>' +
+      '<p class="v-cap"><span class="v-text"></span><span class="v-count"></span>' +
+      '<button class="btn v-zoom" aria-pressed="false">拡大</button></p>' +
       '<button class="btn v-next">次へ ›</button></div>' +
       (n > 1 ? '<div class="v-thumbs" role="group" aria-label="一覧">' + set.items.map((it, k) =>
         '<button class="v-thumb" data-k="' + k + '" aria-label="' + (k + 1) + '枚目：' + esc(it.cap || set.title) + '">' +
         imgTag(it.src, 'sm', '') + '</button>').join('') + '</div>' : '') + '</div>';
-    el = openSheet('viewer', { title, kind: 'VIEWER', w: 900, refresh: true, inset: false, body, init: initViewer, status: '← → キー・スワイプでもめくれます' });
+    el = openSheet('viewer', { title, kind: 'VIEWER', w: 900, refresh: true, inset: false, body, init: initViewer, status: '画像を押すと拡大 ・ ← → キー・スワイプでもめくれます' });
     el._set = setId;
   } else {
     showSheet(el, false);
   }
   view = { setId, i };
+  if (el._zoom) el._zoom(false);
   const it = set.items[i];
   const img = $('.v-img', el), stage = $('.v-stage', el);
   img.classList.remove('img-missing');
@@ -761,16 +798,57 @@ function initViewer(el) {
   $('.v-prev', el).addEventListener('click', () => step(-1));
   $('.v-next', el).addEventListener('click', () => step(1));
   $$('.v-thumb', el).forEach(b => b.addEventListener('click', () => openViewer(view.setId, +b.dataset.k)));
-  const stage = $('.v-stage', el);
+  const stage = $('.v-stage', el), img = $('.v-img', el), zoomBtn = $('.v-zoom', el);
+
+  // 拡大：画像を実際の大きさで表示して、ドラッグ（スマホは指）で動かして見る
+  const zoomed = () => stage.classList.contains('zoomed');
+  function zoom(on, rx = 0.5, ry = 0.3) {
+    stage.classList.toggle('zoomed', on);
+    zoomBtn.textContent = on ? '縮小' : '拡大';
+    zoomBtn.setAttribute('aria-pressed', String(on));
+    if (on) {
+      // 押した場所が真ん中に来るように
+      stage.scrollLeft = rx * img.offsetWidth - stage.clientWidth / 2;
+      stage.scrollTop = ry * img.offsetHeight - stage.clientHeight / 2;
+    } else {
+      stage.scrollLeft = 0; stage.scrollTop = 0;
+    }
+  }
+  zoomBtn.addEventListener('click', () => zoom(!zoomed()));
+  let drag = null, dragged = false;
+  img.addEventListener('click', e => {
+    if (dragged) { dragged = false; return; }
+    const r = img.getBoundingClientRect();
+    zoom(!zoomed(), (e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+  });
+  // マウスでつかんで動かす（スマホは普通にスクロールできる）
+  stage.addEventListener('pointerdown', e => {
+    if (!zoomed() || e.pointerType !== 'mouse' || e.button !== 0) return;
+    e.preventDefault();
+    drag = { x: e.clientX, y: e.clientY, l: stage.scrollLeft, t: stage.scrollTop };
+    dragged = false;
+    stage.classList.add('dragging');
+  });
+  addEventListener('pointermove', e => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (Math.abs(dx) + Math.abs(dy) > 5) dragged = true;
+    stage.scrollLeft = drag.l - dx; stage.scrollTop = drag.t - dy;
+  });
+  addEventListener('pointerup', () => { if (drag) { drag = null; stage.classList.remove('dragging'); } });
+
+  // スワイプでめくる（拡大中は、指で画像を動かすのでめくらない）
   let sx = null, sy = 0;
-  stage.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+  stage.addEventListener('touchstart', e => { sx = e.touches.length === 1 ? e.touches[0].clientX : null; sy = e.touches[0].clientY; }, { passive: true });
   stage.addEventListener('touchend', e => {
-    if (sx === null) return;
+    if (sx === null || zoomed()) { sx = null; return; }
     const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
     sx = null;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) step(dx < 0 ? 1 : -1);
   });
   el._step = step;
+  el._zoom = zoom;
+  el._onEsc = () => { if (!zoomed()) return false; zoom(false); return true; };
 }
 document.addEventListener('keydown', e => {
   if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;

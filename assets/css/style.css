@@ -327,6 +327,12 @@ button.g-shot { cursor: pointer; }
 .v-stage img { max-width: 100%; max-height: 100%; width: auto; height: auto; }
 .v-stage.tall { place-items: start center; }
 .v-stage.tall img { max-height: none; width: min(100%, 860px); }
+.v-stage img { cursor: zoom-in; }
+/* 拡大中：画像を実際の大きさで。ドラッグ・スクロールで動かす */
+.v-stage.zoomed { place-items: start start; touch-action: pan-x pan-y; cursor: grab; }
+.v-stage.zoomed img { max-width: none; max-height: none; width: auto; cursor: zoom-out; }
+.v-stage.zoomed.dragging, .v-stage.zoomed.dragging img { cursor: grabbing; }
+.v-zoom { min-height: 26px; margin-left: 10px; padding: 2px 10px; font-size: 12px; vertical-align: middle; }
 .v-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-family: var(--pixel); font-size: 13px; }
 .v-cap { flex: 1; margin: 0; text-align: center; line-height: 1.5; }
 .v-count { display: inline-block; margin-left: 10px; }

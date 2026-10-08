@@ -330,9 +330,26 @@ button.g-shot { cursor: pointer; }
 .v-stage img { cursor: zoom-in; }
 /* 拡大中：画像を実際の大きさで。ドラッグ・スクロールで動かす */
 .v-stage.zoomed { place-items: start start; touch-action: pan-x pan-y; cursor: grab; }
-.v-stage.zoomed img { max-width: none; max-height: none; width: auto; cursor: zoom-out; }
+.v-stage.zoomed img { max-width: none; max-height: none; margin: auto; cursor: zoom-out; }
 .v-stage.zoomed.dragging, .v-stage.zoomed.dragging img { cursor: grabbing; }
-.v-zoom { min-height: 26px; margin-left: 10px; padding: 2px 10px; font-size: 12px; vertical-align: middle; }
+/* 表示倍率のバー（Win98 のトラックバー風） */
+.v-zoombar { display: flex; align-items: center; gap: 4px; flex: none; font-family: var(--pixel); font-size: 12px; }
+.v-zoombar label { margin-right: 2px; color: var(--muted); }
+.vz-btn { width: 24px; min-height: 22px; padding: 0; font-size: 13px; }
+.vz-btn:active { padding: 1px 0 0 1px; }
+.vz-out { min-width: 3.4em; text-align: right; }
+.vz-range { -webkit-appearance: none; appearance: none; width: 140px; height: 24px; margin: 0; background: transparent; cursor: pointer; }
+.vz-range::-webkit-slider-runnable-track { height: 4px; background: var(--win); box-shadow: inset 1px 1px var(--shade), inset -1px -1px var(--light), inset 2px 2px var(--dark); }
+.vz-range::-moz-range-track { height: 4px; background: var(--win); box-shadow: inset 1px 1px var(--shade), inset -1px -1px var(--light), inset 2px 2px var(--dark); }
+.vz-range::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 11px; height: 20px; margin-top: -8px; border: 0; background: var(--win);
+  box-shadow: inset -1px -1px var(--dark), inset 1px 1px var(--light), inset -2px -2px var(--shade), inset 2px 2px var(--hi);
+}
+.vz-range::-moz-range-thumb {
+  width: 11px; height: 20px; border: 0; border-radius: 0; background: var(--win);
+  box-shadow: inset -1px -1px var(--dark), inset 1px 1px var(--light), inset -2px -2px var(--shade), inset 2px 2px var(--hi);
+}
+.vz-range:focus-visible { outline: 1px dotted var(--ink); outline-offset: 2px; }
 .v-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-family: var(--pixel); font-size: 13px; }
 .v-cap { flex: 1; margin: 0; text-align: center; line-height: 1.5; }
 .v-count { display: inline-block; margin-left: 10px; }
@@ -463,6 +480,14 @@ button.g-shot { cursor: pointer; }
   .dot { width: 44px; height: 44px; }
   .v-stage { height: 54dvh; }
   .v-thumb { flex-basis: 66px; height: 48px; }
+  .v-bar { flex-wrap: wrap; }
+  .v-cap { order: -1; flex-basis: 100%; }
+  .v-zoombar { order: 1; flex: 1 1 100%; justify-content: center; }
+  .v-zoombar label { display: none; }
+  .vz-btn { width: 44px; }
+  .vz-range { flex: 1; height: 44px; }
+  .vz-range::-webkit-slider-thumb { width: 18px; height: 30px; margin-top: -13px; }
+  .vz-range::-moz-range-thumb { width: 18px; height: 30px; }
   .g-play .g-stage { flex: 1; height: auto; min-height: 320px; }
   .sheet-body:has(.g-play) { display: flex; flex-direction: column; padding: 8px; }
   /* サイトもスマホの画面いっぱいに */

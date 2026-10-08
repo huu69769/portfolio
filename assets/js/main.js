@@ -762,19 +762,23 @@ function openViewer(setId, i) {
   if (!el || el._set !== setId) {
     const body = '<div class="viewer"><div class="v-stage in"><img class="v-img" alt=""></div>' +
       '<div class="v-bar"><button class="btn v-prev">‹ 前へ</button>' +
-      '<p class="v-cap"><span class="v-text"></span><span class="v-count"></span>' +
-      '<button class="btn v-zoom" aria-pressed="false">拡大</button></p>' +
+      '<p class="v-cap"><span class="v-text"></span><span class="v-count"></span></p>' +
+      '<div class="v-zoombar"><label for="vz-range">表示倍率</label>' +
+      '<button class="btn vz-btn" data-d="-0.5" aria-label="縮小">－</button>' +
+      '<input type="range" id="vz-range" class="vz-range" min="100" max="400" step="10" value="100">' +
+      '<button class="btn vz-btn" data-d="0.5" aria-label="拡大">＋</button>' +
+      '<output class="vz-out" for="vz-range">100%</output></div>' +
       '<button class="btn v-next">次へ ›</button></div>' +
       (n > 1 ? '<div class="v-thumbs" role="group" aria-label="一覧">' + set.items.map((it, k) =>
         '<button class="v-thumb" data-k="' + k + '" aria-label="' + (k + 1) + '枚目：' + esc(it.cap || set.title) + '">' +
         imgTag(it.src, 'sm', '') + '</button>').join('') + '</div>' : '') + '</div>';
-    el = openSheet('viewer', { title, kind: 'VIEWER', w: 900, refresh: true, inset: false, body, init: initViewer, status: '画像を押すと拡大 ・ ← → キー・スワイプでもめくれます' });
+    el = openSheet('viewer', { title, kind: 'VIEWER', w: 900, refresh: true, inset: false, body, init: initViewer, status: '画像を押すか、表示倍率のバーで拡大 ・ ← → キー・スワイプでもめくれます' });
     el._set = setId;
   } else {
     showSheet(el, false);
   }
   view = { setId, i };
-  if (el._zoom) el._zoom(false);
+  if (el._zoom) el._zoom(1);
   const it = set.items[i];
   const img = $('.v-img', el), stage = $('.v-stage', el);
   img.classList.remove('img-missing');
@@ -798,28 +802,48 @@ function initViewer(el) {
   $('.v-prev', el).addEventListener('click', () => step(-1));
   $('.v-next', el).addEventListener('click', () => step(1));
   $$('.v-thumb', el).forEach(b => b.addEventListener('click', () => openViewer(view.setId, +b.dataset.k)));
-  const stage = $('.v-stage', el), img = $('.v-img', el), zoomBtn = $('.v-zoom', el);
+  const stage = $('.v-stage', el), img = $('.v-img', el);
+  const range = $('.vz-range', el), out = $('.vz-out', el);
 
-  // 拡大：画像を実際の大きさで表示して、ドラッグ（スマホは指）で動かして見る
-  const zoomed = () => stage.classList.contains('zoomed');
-  function zoom(on, rx = 0.5, ry = 0.3) {
-    stage.classList.toggle('zoomed', on);
-    zoomBtn.textContent = on ? '縮小' : '拡大';
-    zoomBtn.setAttribute('aria-pressed', String(on));
-    if (on) {
-      // 押した場所が真ん中に来るように
-      stage.scrollLeft = rx * img.offsetWidth - stage.clientWidth / 2;
-      stage.scrollTop = ry * img.offsetHeight - stage.clientHeight / 2;
-    } else {
-      stage.scrollLeft = 0; stage.scrollTop = 0;
-    }
+  // 拡大：表示倍率（100%＝ウィンドウにぴったり 〜 400%）。拡大中はドラッグ（スマホは指）で動かして見る
+  const ZOOM_MAX = 4;
+  let level = 1, fitW = 0;
+  const zoomed = () => level > 1;
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  // いまウィンドウの真ん中に見えているのは、画像のどのあたりか（0〜1）
+  function viewCenter() {
+    const r = img.getBoundingClientRect(), st = stage.getBoundingClientRect();
+    return [clamp((st.left + st.width / 2 - r.left) / r.width, 0, 1), clamp((st.top + st.height / 2 - r.top) / r.height, 0, 1)];
   }
-  zoomBtn.addEventListener('click', () => zoom(!zoomed()));
+  // z：倍率（1〜4）。cx, cy：真ん中に持ってくる場所（画像の中の割合）。省略すると今の真ん中のまま
+  function zoom(z, cx, cy) {
+    z = clamp(Math.round(z * 10) / 10, 1, ZOOM_MAX);
+    if (cx === undefined) [cx, cy] = level > 1 ? viewCenter() : [0.5, 0.5];
+    if (z > 1 && level === 1) fitW = img.getBoundingClientRect().width;   // ぴったりの時の幅を覚えておく
+    level = z;
+    range.value = Math.round(z * 100);
+    out.textContent = range.value + '%';
+    if (z === 1) {
+      stage.classList.remove('zoomed');
+      img.style.width = '';
+      stage.scrollLeft = 0; stage.scrollTop = 0;
+      return;
+    }
+    stage.classList.add('zoomed');
+    img.style.width = Math.round(fitW * z) + 'px';
+    const r = img.getBoundingClientRect(), st = stage.getBoundingClientRect();
+    stage.scrollLeft += r.left + cx * r.width - (st.left + st.width / 2);
+    stage.scrollTop += r.top + cy * r.height - (st.top + st.height / 2);
+  }
+  range.addEventListener('input', () => zoom(range.value / 100));
+  $$('.vz-btn', el).forEach(b => b.addEventListener('click', () => zoom(level + +b.dataset.d)));
   let drag = null, dragged = false;
   img.addEventListener('click', e => {
     if (dragged) { dragged = false; return; }
     const r = img.getBoundingClientRect();
-    zoom(!zoomed(), (e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+    // 押した場所を真ん中にして 250% に。拡大中なら元に戻す
+    if (zoomed()) zoom(1);
+    else zoom(2.5, (e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
   });
   // マウスでつかんで動かす（スマホは普通にスクロールできる）
   stage.addEventListener('pointerdown', e => {
@@ -848,12 +872,13 @@ function initViewer(el) {
   });
   el._step = step;
   el._zoom = zoom;
-  el._onEsc = () => { if (!zoomed()) return false; zoom(false); return true; };
+  el._onEsc = () => { if (!zoomed()) return false; zoom(1); return true; };
 }
 document.addEventListener('keydown', e => {
   if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
   const el = sheets.get('viewer');
   if (!el || el.hidden || topSheet() !== el || e.altKey || e.metaKey || e.ctrlKey) return;
+  if (e.target.closest && e.target.closest('input')) return;   // 表示倍率のバーを操作中は、めくらない
   e.preventDefault();
   el._step(e.key === 'ArrowLeft' ? -1 : 1);
 });

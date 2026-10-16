@@ -144,7 +144,10 @@ const UNIV = [
 ];
 
 const ILLUST = [
-  'illust-1.jpg', 'illust-2.jpg', 'illust-4.jpg', 'illust-a4-1.png', 'illust-a4-2.png', 'illust-a4-3.png',
+  // 1段目：明るい人物画 ／ 2段目：暗めの厚塗り ／ 3段目：猫（1枚目はフォルダのサムネイルにもなります）
+  'illust-1.jpg', 'illust-7.jpg', 'illust-6.jpg',
+  'illust-5.jpg', 'illust-2.jpg', 'illust-4.jpg',
+  'illust-a4-1.png', 'illust-a4-2.png', 'illust-a4-3.png',
 ].map((f, i) => ({ src: f, cap: 'イラスト ' + String(i + 1).padStart(2, '0') }));
 
 /* --------------------------------------------------------------------------

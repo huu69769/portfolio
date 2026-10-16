@@ -144,7 +144,7 @@ const UNIV = [
 ];
 
 const ILLUST = [
-  'illust-1.jpg', 'illust-2.jpg', 'illust-3.jpg', 'illust-a4-1.png', 'illust-a4-2.png', 'illust-a4-3.png',
+  'illust-1.jpg', 'illust-2.jpg', 'illust-a4-1.png', 'illust-a4-2.png', 'illust-a4-3.png',
 ].map((f, i) => ({ src: f, cap: 'イラスト ' + String(i + 1).padStart(2, '0') }));
 
 /* --------------------------------------------------------------------------

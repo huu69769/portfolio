@@ -895,7 +895,7 @@ function openAbout() {
       PROFILE.bio.map(p => '<p>' + esc(p) + '</p>').join('') +
       (PROFILE.resume ? '<div class="row"><a class="btn" href="' + esc(asset(PROFILE.resume)) + '" target="_blank" rel="noopener">履歴書をダウンロード</a></div>' : '') + '</div></div>' +
       '<section class="exp out"><h3>経歴 / Experience</h3><ol class="timeline">' + EXPERIENCE.map(x =>
-        '<li><p class="t-period">' + esc(x.period) + '</p><p class="t-title">' + esc(x.title) + '</p><p class="t-text">' + esc(x.text) + '</p></li>').join('') +
+        '<li><p class="t-period">' + esc(x.period) + '</p><p class="t-title">' + esc(x.title) + '</p>' + (x.text ? '<p class="t-text">' + esc(x.text) + '</p>' : '') + '</li>').join('') +
       '</ol></section>',
   });
 }

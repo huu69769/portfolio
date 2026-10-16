@@ -143,11 +143,9 @@ const UIUX = [
     items: [6, 7, 8, 9, 10].map((n, i) => ({ src: n + '.jpg', cap: 'Nudge ' + String(i + 1).padStart(2, '0') })) },
 ];
 
+// 大学時代のデザイン（いまは空。空のあいだはアイコンも分類も隠れます）
 const UNIV = [
-  { src: 'web.jpg',     cap: '旅行サイトデザイン' },
-  { src: '2.png',       cap: 'パッケージデザイン' },
-  { src: '3.png',       cap: 'フォントデザイン' },
-  { src: 'book-01.png', cap: 'ブックカバーデザイン' },
+  // { src: 'ファイル名.jpg', cap: '作品の説明' },
 ];
 
 const ILLUST = [
@@ -183,8 +181,8 @@ const DESK = [
   { id: 'web',        label: 'Web制作',            x: 0.18, y: 0.03 },   // Web制作が空のあいだは表示されません
   { id: 'uiux',       label: 'UI/UX システム',      x: 0.10, y: 0.23 },
   { id: 'illust',     label: 'イラスト',            x: 0.02, y: 0.43 },
-  { id: 'univ',       label: '大学時代のデザイン',  x: 0.10, y: 0.63 },
-  { id: 'works',      label: 'すべての作品',        x: 0.02, y: 0.85 },
+  { id: 'works',      label: 'すべての作品',        x: 0.10, y: 0.63 },
+  { id: 'univ',       label: '大学時代のデザイン',  x: 0.02, y: 0.85 },   // 大学時代のデザインが空のあいだは表示されません
   // ゲームを足すときの例： { id: 'game:mygame', label: 'ゲーム\nゲームの名前', x: 0.10, y: 0.95 },
   // ── 右側：わたしのこと ──
   { id: 'about',      label: '私について.txt',      x: 0.98, y: 0.02 },

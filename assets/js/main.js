@@ -76,13 +76,13 @@ SETS.univ = { title: '大学時代のデザイン', items: UNIV };
 SETS.illust = { title: 'イラスト', items: ILLUST };
 const catLabel = id => (CATEGORIES.find(c => c.id === id) || {}).label || id;
 // 中身がまだ無い分類（ゲームなど）は出さない
-const HAS = { app: APPS.length, web: WEB.length, game: GAMES.length };
+const HAS = { app: APPS.length, web: WEB.length, game: GAMES.length, uiux: UIUX.length, univ: UNIV.length, illust: ILLUST.length };
 const CATS = CATEGORIES.filter(c => !(c.id in HAS) || HAS[c.id]);
 // デスクトップに置くもの（中身が無いアイコンは出さない）
 const findApp = id => APPS.find(a => 'app:' + a.id === id);
 const findGame = id => GAMES.find(g => 'game:' + g.id === id);
 const DESK_ITEMS = DESK.filter(d =>
-  d.id === 'resume' ? PROFILE.resume : d.id === 'web' ? WEB.length : d.id.indexOf('app:') === 0 ? findApp(d.id) : d.id.indexOf('game:') === 0 ? findGame(d.id) : true);
+  d.id === 'resume' ? PROFILE.resume : d.id in HAS ? HAS[d.id] : d.id.indexOf('app:') === 0 ? findApp(d.id) : d.id.indexOf('game:') === 0 ? findGame(d.id) : true);
 
 // カルーセルに並べるもの：Web制作 ＋ ゲーム（ゲームも見逃さないように）
 const SLIDES = WEB.map((w, i) => Object.assign({ type: 'web', index: i }, w))
@@ -94,7 +94,8 @@ const SLIDES = WEB.map((w, i) => Object.assign({ type: 'web', index: i }, w))
 const boot = $('#boot');
 const BOOT_LINES = ['LUO JIAWEN portfolio OS  ver.2026', ''].concat(
   APPS.length ? ['アプリ を読み込み中 ........ OK'] : [],
-  ['UI/UX を読み込み中 ........ OK', 'イラスト を読み込み中 ...... OK'],
+  UIUX.length ? ['UI/UX を読み込み中 ........ OK'] : [],
+  ILLUST.length ? ['イラスト を読み込み中 ...... OK'] : [],
   WEB.length ? ['Web制作 を読み込み中 ....... OK'] : [],
   GAMES.length ? ['Web ゲーム を読み込み中 .... OK'] : [],
   ['', 'ようこそ。']);

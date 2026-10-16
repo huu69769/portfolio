@@ -82,7 +82,7 @@ const CATS = CATEGORIES.filter(c => !(c.id in HAS) || HAS[c.id]);
 const findApp = id => APPS.find(a => 'app:' + a.id === id);
 const findGame = id => GAMES.find(g => 'game:' + g.id === id);
 const DESK_ITEMS = DESK.filter(d =>
-  d.id === 'web' ? WEB.length : d.id.indexOf('app:') === 0 ? findApp(d.id) : d.id.indexOf('game:') === 0 ? findGame(d.id) : true);
+  d.id === 'resume' ? PROFILE.resume : d.id === 'web' ? WEB.length : d.id.indexOf('app:') === 0 ? findApp(d.id) : d.id.indexOf('game:') === 0 ? findGame(d.id) : true);
 
 // カルーセルに並べるもの：Web制作 ＋ ゲーム（ゲームも見逃さないように）
 const SLIDES = WEB.map((w, i) => Object.assign({ type: 'web', index: i }, w))
@@ -893,7 +893,7 @@ function openAbout() {
       '<div class="about"><figure class="about-photo">' + imgTag(PROFILE.avatar, 'sm', 'ルオ ジアウェンの写真', false) + '</figure><div>' +
       '<h3 class="about-name">' + esc(PROFILE.name) + '</h3>' +
       PROFILE.bio.map(p => '<p>' + esc(p) + '</p>').join('') +
-      '<div class="row"><a class="btn" href="' + esc(asset(PROFILE.resume)) + '" target="_blank" rel="noopener">履歴書をダウンロード</a></div></div></div>' +
+      (PROFILE.resume ? '<div class="row"><a class="btn" href="' + esc(asset(PROFILE.resume)) + '" target="_blank" rel="noopener">履歴書をダウンロード</a></div>' : '') + '</div></div>' +
       '<section class="exp out"><h3>経歴 / Experience</h3><ol class="timeline">' + EXPERIENCE.map(x =>
         '<li><p class="t-period">' + esc(x.period) + '</p><p class="t-title">' + esc(x.title) + '</p><p class="t-text">' + esc(x.text) + '</p></li>').join('') +
       '</ol></section>',

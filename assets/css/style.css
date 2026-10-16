@@ -325,6 +325,8 @@ button.g-shot { cursor: pointer; }
   touch-action: pan-y;
 }
 .v-stage img { max-width: 100%; max-height: 100%; width: auto; height: auto; }
+/* 100% のときは、縦長の画像も含めて全体がウィンドウに収まるように（マス目の大きさを枠いっぱいに固定） */
+.v-stage:not(.zoomed):not(.tall) { grid-template: 100% / 100%; }
 .v-stage.tall { place-items: start center; }
 .v-stage.tall img { max-height: none; width: min(100%, 860px); }
 .v-stage img { cursor: zoom-in; }
